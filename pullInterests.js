@@ -6,6 +6,8 @@ const fs = require('fs'),
 
 const months = ["January", "February", "March", 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'] // months array to match Month Name with Month Number
 const years = []; // to hold years (of Primary Interests Information)
+const today = getDayOfYear();
+const currentYear = (new Date()).getFullYear();
 
 // Converting Date Format (Month Date, Year) to (YYYY-MM-DD) for getDayOfYear()
 function modifyOriginalDate(dateToModify) {
@@ -82,6 +84,7 @@ fs.readFile(filePath, { encoding: 'utf-8' }, async function (err, data) {
             dataDivs.map((h3, index) => {
                 let text = h3.nextElementSibling.structuredText;
                 let dayNumber = modifyOriginalDate(h3.structuredText); // so to find Day Number in a Year
+                let thisYear = dayNumber.split("-")[0];
                 dayNumber = getDayOfYear(new Date(dayNumber));
 
                 // fetch Primary Interest Data from the parsed text
@@ -91,7 +94,8 @@ fs.readFile(filePath, { encoding: 'utf-8' }, async function (err, data) {
                     let interest = interestText.split("/")[interestText.split("/").length - 1]
                     _tempData.push({
                         date: dayNumber,
-                        interest: interest
+                        interest: interest,
+                        year: thisYear
                     })
                 } else if (text.includes(" Interests ")) {
                     let interestText = text.slice(text.indexOf("Primary Interests "))
@@ -100,19 +104,22 @@ fs.readFile(filePath, { encoding: 'utf-8' }, async function (err, data) {
                     _tempData.push({
                         date: dayNumber,
                         interest: interest,
+                        year: thisYear
                     })
                 }
-
+                // console.log(_tempData);
                 // to resolve dataPromise
                 if (index === dataDivs.length - 1) {
-                    resolve(_tempData)
+                    resolve(_tempData.reverse())
                 }
             })
         })
 
         let _template = template.templateTop // Adding Top section to _template.
+        let fillerValue = ""; // to hold interests
+        let fillerClass = "empty"; // to hold interest classes
 
-        years.forEach(function (year) {
+        years.reverse().forEach(function (year) {
             // Adding Calendar and Year Header Div to _template
             _template +=
                 `<div class="calendar">
@@ -126,38 +133,34 @@ fs.readFile(filePath, { encoding: 'utf-8' }, async function (err, data) {
 
             // Iteration to add day divs of a year in the _template
             for (let i = 1; i <= _days; i++) {
-
-                // Filter to check if Primary Interest is available on any day of the year
-                (dataPromise.filter(dp => dp.date === i).length > 0) ?
-                    _template += `<div class="day ${i + " " + dataPromise.filter(dp => dp.date === i)[0].interest.toLocaleLowerCase()}">` + `${dataPromise.filter(dp => dp.date === i)[0].interest[0].toLocaleUpperCase()}` + `</div>` :
-                    _template += `<div class="day ${i} empty"></div>`
-
-                // to add comment after every 100 day divs
-                if (i === 100 || i === 200 || i === 300) {
-                    if (i === 300) {
-                        _template += `<!-- ${i + 65} -->`
-                    } else {
-                        _template += `<!-- ${i + 100} -->`
+                if (dataPromise.filter(dp => dp.date === i && dp.year == year).length > 0) {
+                    fillerValue = dataPromise.filter(dp => dp.date === i && dp.year == year)[0].interest
+                    fillerClass = fillerValue;
+                    _template += `<div class="day ${i} ${fillerClass.toLocaleLowerCase()}">${fillerValue[0]}</div>`
+                } else {
+                    // Marks till today
+                    if (year == currentYear && i > today) {
+                        fillerClass = 'empty';
+                        fillerValue = ""
                     }
+                    _template += `<div class="day ${i} ${fillerClass.toLocaleLowerCase()}">${fillerValue[0] ? fillerValue[0] : ""}</div>`
                 }
 
-                // to end the Calendar div
+                //  to end the Calendar div
                 if (i === _days) {
                     _template += `</div>`
                 }
             }
 
-            // Add Bottom section to template 
+            // to end the Body
             if (year === years[years.length - 1]) {
                 _template += template.templateBottom;
             }
         })
 
-        // _template output check
-        console.log(_template);
-
         // write template to sampleOutput.html file
         fs.writeFileSync('./sampleOutput-' + Date.now() + '.html', _template)
+        // fs.writeFileSync("sampleOutput-1658216592215.html", _template)
 
     } else {
         // error
