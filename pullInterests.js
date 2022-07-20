@@ -155,7 +155,7 @@ fs.readFile(filePath, { encoding: 'utf-8' }, async function (err, data) {
                     tooltipFiller = previousYearValues[0].tooltipData;
                     fillerValue = previousYearValues[0].interest;
                     fillerClass = fillerValue;
-                    _template += `<div class="day ${i} ${fillerClass.toLocaleLowerCase()}" tooltip-content="${getDateFromDay(year, i) + "&#xa;" + tooltipFiller.tooltipData}">${fillerValue[0]}</div>`
+                    _template += `<div class="day ${i} ${fillerClass.toLocaleLowerCase()}" tooltip-content="${getDateFromDay(year, i) + "&#xa;" + tooltipFiller}">${fillerValue[0]}</div>`
                 }
                 if (dataPromise.filter(dp => dp.date === i && dp.year == year).length > 0) {
                     interestFound = true;
@@ -185,8 +185,8 @@ fs.readFile(filePath, { encoding: 'utf-8' }, async function (err, data) {
         })
 
         // write template to sampleOutput.html file
-        fs.writeFileSync('./sampleOutput-' + Date.now() + '.html', _template) // while in production mode
-        // fs.writeFileSync("sampleOutput-1658304793818.html", _template) // while in dev mode
+        // fs.writeFileSync('./sampleOutput-' + Date.now() + '.html', _template) // while in production mode
+        fs.writeFileSync("sampleOutput-1658304793818.html", _template) // while in dev mode
 
     } else {
         // error
