@@ -13,12 +13,14 @@ exports.templateBottom = `
         background-color: #FDFCFB;
         color: rgb(58, 58, 58);
         font-size: 16px;
-        font-weight: bold;
     }
     h1 {
         color: #585858;
         text-align: center;
 
+    }
+    h3 {
+        margin-left: -30px;
     }
     .calendar{
         width: 800px;
@@ -35,13 +37,13 @@ exports.templateBottom = `
 
     .day {
         outline: 1px solid grey;
-        width: 2.75em;
+        width: 3.75em;
         text-align: center;
-        height: 1.25em;
+        height: 2.25em;
         display: inline-block;
         vertical-align: top;
         padding: 5px;
-        text-transform: uppercase;
+        text-transform: lowercase;
     }
 
     .day:empty {
@@ -65,11 +67,13 @@ exports.templateBottom = `
         bottom: 100%;
         content: attr(tooltip-content);
         display: block;
-        padding: 1em;
         position: absolute;    
         width: fit-content;
+        height: fit-content;
         white-space: pre;
         z-index: 1;
+        text-transform: capitalize;
+        text-align: start;
     }
 
 </style>

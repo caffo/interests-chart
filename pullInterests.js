@@ -2,6 +2,7 @@ const fs = require('fs'),
     path = require('path'),
     HTMLParser = require('node-html-parser'),
     template = require('./template'),
+    DomParser = require("dom-parser"),
     filePath = path.join(__dirname, "Rodrigo Franco's Notes — Primary Interests_Calendar.html") // Iteration here for multiple files
 
 const months = ["January", "February", "March", 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'] // months array to match Month Name with Month Number
@@ -13,7 +14,21 @@ const currentYear = (new Date()).getFullYear();
 function getDateFromDay(year, day) {
     var date = new Date(year, 0);
     var d = new Date(date.setDate(day))
-    return months[d.getMonth()] + " " + d.getDate() + ", " + d.getFullYear();
+    let finalDate = d.getDate();
+    if (d.getDate() === 1 || d.getDate().toString()[d.getDate().toString().length - 1] == 1 && d.getDate() !== 11) {
+        finalDate += "st"
+    } else if (d.getDate() === 2 || d.getDate().toString()[d.getDate().toString().length - 1] == 2 && d.getDate() !== 12) {
+        finalDate += "nd"
+    } else if (d.getDate() === 3 || d.getDate().toString()[d.getDate().toString().length - 1] == 3 && d.getDate() !== 13) {
+        finalDate += "rd"
+    } else {
+        if (d.getDate() === 11) {
+            finalDate += "th"
+        } else {
+            finalDate += "th"
+        }
+    }
+    return months[d.getMonth()] + " " + finalDate + ", " + d.getFullYear();
 }
 
 // Converting Date Format (Month Date, Year) to (YYYY-MM-DD) for getDayOfYear()
@@ -75,10 +90,16 @@ function numberOfDays(year) {
     return ((year % 4 === 0 && year % 100 > 0) || year % 400 == 0) ? 366 : 365;
 }
 
+function buildHtml(node) {
+    // concatenate body string
+    return '<html><head></head><body>' + node.innerHTML + '</body></html>';
+};
+
 // extract from Html file and create Html according to the pulled data
 fs.readFile(filePath, { encoding: 'utf-8' }, async function (err, data) {
     if (!err) {
         // Promise to fetch data from the html file read.
+        var parser = new DomParser();
         const dataPromise = await new Promise((resolve, reject) => {
 
             const root = HTMLParser.parse(data)
@@ -97,14 +118,19 @@ fs.readFile(filePath, { encoding: 'utf-8' }, async function (err, data) {
                     let interestOutText = text.slice(text.indexOf("Primary Interests/Interests"));
                     let interestText = interestOutText.split("\n")[0]
                     let interest = interestText.split("/")[interestText.split("/").length - 1]
+                    // let tooltipContent = buildHtml(h3.nextElementSibling.innerHTML)
+                    let tooltipContent = h3.nextElementSibling.innerText.replace("\n", " ").trim()
                     _tempData.push({
                         date: dayNumber,
                         interest: interest,
                         year: thisYear,
-                        tooltipData: text,
-                        tooltipDate: h3.structuredText
+                        tooltipData: tooltipContent,
+                        tooltipDate: h3.outerHTML
                     })
                 } else if (text.includes(" Interests ")) {
+                    // let tooltipContent = buildHtml(h3.nextElementSibling.innerHTML);
+                    let tooltipContent = h3.nextElementSibling.innerText.replace("\n", " ").trim()
+
                     let interestText = text.slice(text.indexOf("Primary Interests "))
                     let _splitInterestText = interestText.split(" ")
                     let interest = _splitInterestText[_splitInterestText.length - 1]
@@ -112,8 +138,8 @@ fs.readFile(filePath, { encoding: 'utf-8' }, async function (err, data) {
                         date: dayNumber,
                         interest: interest,
                         year: thisYear,
-                        tooltipData: text,
-                        tooltipDate: h3.structuredText
+                        tooltipData: tooltipContent,
+                        tooltipDate: h3.outerHTML
                     })
                 }
                 // console.log(_tempData);
@@ -134,6 +160,7 @@ fs.readFile(filePath, { encoding: 'utf-8' }, async function (err, data) {
             let previousYearValues = dataPromise.filter(dp => dp.year == year - 1)
             let maxDate = 0;
             let interestFound = false;
+            let writingPrevious = false;
             if (previousYearValues && previousYearValues.length > 0) {
                 // previousYearValues.reduce((val1, val2) => { val1 = val1 > val2.date ? val1 : val2.date }, 0)
                 maxDate = Math.max.apply(Math, previousYearValues.map((pvy) => pvy.date))
@@ -151,12 +178,6 @@ fs.readFile(filePath, { encoding: 'utf-8' }, async function (err, data) {
 
             // Iteration to add day divs of a year in the _template
             for (let i = 1; i <= _days; i++) {
-                if (previousYearValues.length > 0 && !interestFound) {
-                    tooltipFiller = previousYearValues[0].tooltipData;
-                    fillerValue = previousYearValues[0].interest;
-                    fillerClass = fillerValue;
-                    _template += `<div class="day ${i} ${fillerClass.toLocaleLowerCase()}" tooltip-content="${getDateFromDay(year, i) + "&#xa;" + tooltipFiller}">${fillerValue[0]}</div>`
-                }
                 if (dataPromise.filter(dp => dp.date === i && dp.year == year).length > 0) {
                     interestFound = true;
                     tooltipFiller = dataPromise.filter(dp => dp.date === i && dp.year == year)[0]
@@ -165,11 +186,21 @@ fs.readFile(filePath, { encoding: 'utf-8' }, async function (err, data) {
                     _template += `<div class="day ${i} ${fillerClass.toLocaleLowerCase()}" tooltip-content="${getDateFromDay(year, i) + "&#xa;" + tooltipFiller.tooltipData}">${fillerValue[0]}</div>`
                 } else {
                     // Marking till today only 
-                    if (year == currentYear && i > today) {
-                        fillerClass = 'empty';
-                        fillerValue = "";
+                    if (!interestFound && i < today && year == currentYear) {
+                        let _holder = previousYearValues[0];
+                        tooltipFiller = _holder.tooltipData;
+                        fillerValue = _holder.interest;
+                        fillerClass = fillerValue;
+                        _template += `<div class="day ${i} ${fillerClass.toLocaleLowerCase()}" tooltip-content="${getDateFromDay(year, i) + "&#xa;" + tooltipFiller}">${fillerValue[0]}</div>`
+                    } else {
+                        if (year == currentYear && i > today) {
+                            fillerClass = 'empty';
+                            fillerValue = "";
+                        }
+                        _template += `<div class="day ${i} ${fillerClass.toLocaleLowerCase()}" tooltip-content="${getDateFromDay(year, i) + "&#xa;" + tooltipFiller.tooltipData}">${fillerValue[0] ? fillerValue[0] : ""}</div>`
+
                     }
-                    _template += `<div class="day ${i} ${fillerClass.toLocaleLowerCase()}" tooltip-content="${getDateFromDay(year, i) + "&#xa;" + tooltipFiller.tooltipData}">${fillerValue[0] ? fillerValue[0] : ""}</div>`
+
                 }
 
                 //  to end the Calendar div
@@ -186,7 +217,7 @@ fs.readFile(filePath, { encoding: 'utf-8' }, async function (err, data) {
 
         // write template to sampleOutput.html file
         fs.writeFileSync('./sampleOutput-' + Date.now() + '.html', _template) // while in production mode
-        // fs.writeFileSync("sampleOutput-1658304793818.html", _template) // while in dev mode
+        // fs.writeFileSync("sampleOutput-1658325053716.html", _template) // while in dev mode
 
     } else {
         // error
