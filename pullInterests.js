@@ -185,8 +185,8 @@ fs.readFile(filePath, { encoding: 'utf-8' }, async function (err, data) {
         })
 
         // write template to sampleOutput.html file
-        // fs.writeFileSync('./sampleOutput-' + Date.now() + '.html', _template) // while in production mode
-        fs.writeFileSync("sampleOutput-1658304793818.html", _template) // while in dev mode
+        fs.writeFileSync('./sampleOutput-' + Date.now() + '.html', _template) // while in production mode
+        // fs.writeFileSync("sampleOutput-1658304793818.html", _template) // while in dev mode
 
     } else {
         // error
