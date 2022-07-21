@@ -12,23 +12,27 @@ exports.templateBottom = `
     body {
         background-color: #FDFCFB;
         color: rgb(58, 58, 58);
-        font-size: 16px;
+        font-family: var(--body-font, "Degular Text")
     }
     h1 {
         color: #585858;
-        text-align: center;
-
+        font-family: var(--header-font, "Redaction 35")
     }
-    h3 {
-        margin-left: -30px;
+    
+    a[href^="https://"]:after {
+        background-image: none!important;
     }
     .calendar{
         width: 800px;
         height: auto;
         margin: 0 auto;
-        padding-top: 20px;
         display: block;
         background-color: #FDFCFB;
+    }
+
+    .calendar h3 {
+        text-align: center;
+        margin-bottom: 15px;
     }
 
     .tooltip {
@@ -37,7 +41,7 @@ exports.templateBottom = `
 
     .day {
         outline: 1px solid grey;
-        width: 3.75em;
+        width: 1.25em;
         text-align: center;
         height: 2.25em;
         display: inline-block;
@@ -76,6 +80,4 @@ exports.templateBottom = `
         text-align: start;
     }
 
-</style>
-</body>
-</html>`    
+</style>`    
