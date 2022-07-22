@@ -23,16 +23,20 @@ exports.templateBottom = `
         background-image: none!important;
     }
     .calendar{
-        width: 800px;
+        width: 600px;
         height: auto;
         margin: 0 auto;
         display: block;
         background-color: #FDFCFB;
     }
 
+    .calendar > * {
+        vertical-align: middle;
+        margin: 1px;
+    }
+
     .calendar h3 {
-        text-align: center;
-        margin-bottom: 15px;
+        margin: 15px 0px;
     }
 
     .tooltip {
@@ -41,19 +45,21 @@ exports.templateBottom = `
 
     .day {
         outline: 1px solid grey;
-        width: 1.25em;
+        width: 20px;
         text-align: center;
-        height: 2.25em;
+        justify-content: center;
+        height: 35px;
         display: inline-block;
-        vertical-align: top;
-        padding: 5px;
+        padding: 5px 0px;
         text-transform: lowercase;
+        font-size: larger;
     }
 
     .day:empty {
         cursor: auto;
         background-color: white;
         color: white;
+        position: relative;
     }
 
     .day:not(:empty) {
@@ -69,7 +75,7 @@ exports.templateBottom = `
         border-radius: 4px;
         color: #585858;
         bottom: 100%;
-        content: attr(tooltip-content);
+        content: attr(data-content);
         display: block;
         position: absolute;    
         width: fit-content;

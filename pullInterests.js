@@ -1,6 +1,7 @@
 const fs = require('fs'),
     path = require('path'),
     HTMLParser = require('node-html-parser'),
+    DOMParser = require('dom-parser'),
     calendarTemplate = require('./templates/calendarTemplate'),
     primaryInterestsTemplate = require("./templates/primary_interests_template"),
     filePathToFetchCalendar = path.join(__dirname, "Rodrigo Franco's Notes — Primary Interests_Calendar.html"), // Iteration here for multiple files
@@ -92,6 +93,22 @@ function numberOfDays(year) {
     return ((year % 4 === 0 && year % 100 > 0) || year % 400 == 0) ? 366 : 365;
 }
 
+// escape HTML tags
+function escape(htmlStr) {
+    let newStr = htmlStr.replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#39;");
+    return newStr
+}
+
+// to build the ToolTip HTML content
+function buildToolTipHTML(elem) {
+    const nodex = new DOMParser().parseFromString(elem, 'text/html');
+    return nodex.rawHTML;
+}
+
 // Write html to original primary interests page
 function writeTemplateToHTML(_template) {
     // Read local copy of primary_interests.html
@@ -125,7 +142,8 @@ fs.readFile(filePathToFetchCalendar, { encoding: 'utf-8' }, async function (err,
                 let dayNumber = modifyOriginalDate(h3.structuredText);// so to find Day Number in a Year
                 let thisYear = dayNumber.split("-")[0];
                 dayNumber = getDayOfYear(new Date(dayNumber));
-
+                // console.log(h3.nextElementSibling.innerHTML);
+                h3.nextElementSibling.innerHTML.split("\n").map(el => el.trim()).join()
                 // fetch Primary Interest Data from the parsed text
                 if (text.includes("/Interests/")) {
                     let interestOutText = text.slice(text.indexOf("Primary Interests/Interests"));
@@ -134,6 +152,16 @@ fs.readFile(filePathToFetchCalendar, { encoding: 'utf-8' }, async function (err,
                     let tooltipContent = h3.nextElementSibling.textContent.split('\n');
                     tooltipContent = tooltipContent.map(tc => tc.trim())
                     tooltipContent = tooltipContent.filter(tc => tc !== "").join("\n")
+                    // let tooltipContent = h3.nextElementSibling.innerHTML.split("\n");
+                    // tooltipContent = tooltipContent.map(ttc => {
+                    //     if (ttc.indexOf('id') > -1) {
+                    //         return ttc.trim().split(" ")[0] + '>'
+                    //     } else {
+                    //         return ttc.trim()
+                    //     }
+                    // })
+                    // tooltipContent = buildToolTipHTML(tooltipContent.join(" "));
+                    // console.log(tooltipContent)
                     _tempData.push({
                         date: dayNumber,
                         interest: interest,
@@ -149,6 +177,15 @@ fs.readFile(filePathToFetchCalendar, { encoding: 'utf-8' }, async function (err,
                     let tooltipContent = h3.nextElementSibling.textContent.split("\n");
                     tooltipContent = tooltipContent.map(tc => tc.trim())
                     tooltipContent = tooltipContent.filter(tc => tc !== "").join("\n")
+                    // let tooltipContent = h3.nextElementSibling.innerHTML.split("\n");
+                    // tooltipContent = tooltipContent.map(ttc => {
+                    //     if (ttc.indexOf('id') > -1) {
+                    //         return ttc.trim().split(" ")[0] + '>'
+                    //     } else {
+                    //         return ttc.trim()
+                    //     }
+                    // })
+                    // tooltipContent = buildToolTipHTML(tooltipContent.join(" "));
                     _tempData.push({
                         date: dayNumber,
                         interest: interest,
@@ -177,7 +214,6 @@ fs.readFile(filePathToFetchCalendar, { encoding: 'utf-8' }, async function (err,
             let maxDate = 0;
             let interestFound = false;
             if (previousYearValues && previousYearValues.length > 0) {
-                // previousYearValues.reduce((val1, val2) => { val1 = val1 > val2.date ? val1 : val2.date }, 0)
                 maxDate = Math.max.apply(Math, previousYearValues.map((pvy) => pvy.date))
             }
             previousYearValues = previousYearValues.filter(pvy => pvy.date == maxDate)
@@ -198,7 +234,7 @@ fs.readFile(filePathToFetchCalendar, { encoding: 'utf-8' }, async function (err,
                     tooltipFiller = dataPromise.filter(dp => dp.date === i && dp.year == year)[0]
                     fillerValue = dataPromise.filter(dp => dp.date === i && dp.year == year)[0].interest
                     fillerClass = fillerValue;
-                    _template += `<div class="day ${i} ${fillerClass.toLocaleLowerCase()}" tooltip-content="${getDateFromDay(year, i) + "&#xa;" + tooltipFiller.tooltipData}">${fillerValue[0]}</div>`
+                    _template += `<div class="day ${i} ${fillerClass.toLocaleLowerCase()}" data-content="${getDateFromDay(year, i) + "&#xa;" + tooltipFiller.tooltipData}">${fillerValue[0]}</div>`
                 } else {
                     // Marking till today only 
                     if (!interestFound && i < today && year == currentYear) {
@@ -206,15 +242,14 @@ fs.readFile(filePathToFetchCalendar, { encoding: 'utf-8' }, async function (err,
                         tooltipFiller = _holder.tooltipData;
                         fillerValue = _holder.interest;
                         fillerClass = fillerValue;
-                        _template += `<div class="day ${i} ${fillerClass.toLocaleLowerCase()}" tooltip-content="${getDateFromDay(year, i) + "&#xa;" + tooltipFiller}">${fillerValue[0]}</div>`
+                        _template += `<div class="day ${i} ${fillerClass.toLocaleLowerCase()}" data-content="${getDateFromDay(year, i) + "&#xa;" + tooltipFiller}">${fillerValue[0]}</div>`
                     } else {
                         if (year == currentYear && i > today) {
                             fillerClass = 'empty';
                             fillerValue = "";
                         }
-                        _template += `<div class="day ${i} ${fillerClass.toLocaleLowerCase()}" tooltip-content="${getDateFromDay(year, i) + "&#xa;" + tooltipFiller.tooltipData}">${fillerValue[0] ? fillerValue[0] : ""}</div>`
+                        _template += `<div class="day ${i} ${fillerClass.toLocaleLowerCase()}" data-content="${getDateFromDay(year, i) + "&#xa;" + tooltipFiller.tooltipData}">${fillerValue[0] ? fillerValue[0] : ""}</div>`
                     }
-
                 }
 
                 //  to end the Calendar div
