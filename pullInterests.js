@@ -31,7 +31,7 @@ function getDateFromDay(year, day) {
             finalDate += "th"
         }
     }
-    return months[d.getMonth()] + " " + finalDate + ", " + d.getFullYear();
+    return `<h3>` + months[d.getMonth()] + " " + finalDate + ", " + d.getFullYear() + `</h3>`;
 }
 
 // Converting Date Format (Month Date, Year) to (YYYY-MM-DD) for getDayOfYear()
@@ -236,14 +236,14 @@ fs.readFile(filePathToFetchCalendar, { encoding: 'utf-8' }, async function (err,
                         tooltipFiller = _holder.tooltipData;
                         fillerValue = _holder.interest;
                         fillerClass = fillerValue;
-                        _template += `<div class="day ${i} ${fillerClass.toLocaleLowerCase()}">${fillerValue[0]}<div class="tooltip">${getDateFromDay(year, i) + "&#xa;" + tooltipFiller}</div></div>`
+                        _template += `<div class="day ${i} ${fillerClass.toLocaleLowerCase()}">${fillerValue[0]}<div class="tooltip">${getDateFromDay(year, i) + tooltipFiller}</div></div>`
                     } else {
                         if ((year == currentYear && i > today) || !interestFound) {
                             fillerClass = 'empty';
                             fillerValue = "";
                             _template += `<div class="day ${i} ${fillerClass.toLocaleLowerCase()}">${fillerValue[0] ? fillerValue[0] : ""}</div>`
                         } else {
-                            _template += `<div class="day ${i} ${fillerClass.toLocaleLowerCase()}">${fillerValue[0] ? fillerValue[0] : ""}<div class="tooltip">${getDateFromDay(year, i) + "&#xa;" + tooltipFiller.tooltipData}</div></div>`
+                            _template += `<div class="day ${i} ${fillerClass.toLocaleLowerCase()}">${fillerValue[0] ? fillerValue[0] : ""}<div class="tooltip">${getDateFromDay(year, i) + tooltipFiller.tooltipData}</div></div>`
                         }
                     }
                 }

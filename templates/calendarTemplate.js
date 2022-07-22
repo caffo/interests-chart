@@ -100,10 +100,20 @@ exports.templateBottom = `
         display: block;
     }
 
+    .day:not(:empty):hover .tooltip h3{
+        padding: 10px !important;
+        margin-top: 5px !important;
+        margin-left: 5px !important;
+        margin-right: 0px !important;
+        margin-bottom: 0px !important;
+        line-height: 0 !important;
+        font-size: large;
+    }
+
     .day:not(:empty):hover .tooltip li{
         list-style-type: none!important;
         padding: 0 !important;
-        margin: 0 !important;
+        margin: 0 5px !important;
         line-height: 0 !important;
         font-size: large;
     }
@@ -111,7 +121,7 @@ exports.templateBottom = `
     .day:not(:empty):hover .tooltip ul{
         list-style-type: none!important;
         padding: 0 !important;
-        margin: 0 !important;
+        margin: 0 5px !important;
         line-height: 0 !important;
         font-size: large;
     }
@@ -119,7 +129,7 @@ exports.templateBottom = `
     .day:not(:empty):hover .tooltip p{
         list-style-type: none!important;
         padding: 0 !important;
-        margin: 0 !important;
+        margin: 0 5px !important;
         line-height: 20px !important;
         font-size: large;
     }
