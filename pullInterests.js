@@ -1,9 +1,11 @@
 const fs = require('fs'),
     path = require('path'),
     HTMLParser = require('node-html-parser'),
-    template = require('./template'),
-    DomParser = require("dom-parser"),
-    filePath = path.join(__dirname, "Rodrigo Franco's Notes — Primary Interests_Calendar.html") // Iteration here for multiple files
+    calendarTemplate = require('./templates/calendarTemplate'),
+    primaryInterestsTemplate = require("./templates/primary_interests_template"),
+    filePathToFetchCalendar = path.join(__dirname, "Rodrigo Franco's Notes — Primary Interests_Calendar.html"), // Iteration here for multiple files
+    filePathToSaveCalendar = path.join(__dirname, "Rodrigo Franco's Notes — Primary Interests.html")
+
 
 const months = ["January", "February", "March", 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'] // months array to match Month Name with Month Number
 const years = []; // to hold years (of Primary Interests Information)
@@ -90,16 +92,27 @@ function numberOfDays(year) {
     return ((year % 4 === 0 && year % 100 > 0) || year % 400 == 0) ? 366 : 365;
 }
 
-function buildHtml(node) {
-    // concatenate body string
-    return '<html><head></head><body>' + node.innerHTML + '</body></html>';
-};
+// Write html to original primary interests page
+function writeTemplateToHTML(_template) {
+    // Read local copy of primary_interests.html
+    fs.readFile(filePathToSaveCalendar, { encoding: 'utf-8' }, function (err, data) {
+        let resultTemplate = primaryInterestsTemplate.templateTop
+        if (!err) {
+            const root = HTMLParser.parse(data);
+            const main_section = root.getElementsByTagName("section")[0];
+            main_section.innerHTML += `<h1>Primary Interests/Calendar</h1>` + _template;
+            resultTemplate += main_section + primaryInterestsTemplate.templateBottom;
+            // following operation overwrites the original file so output added to an extra file for testing purposes.
+            // after testing, can be merged with the Original Primary Interests Html File.
+            fs.writeFileSync("./Rodrigo Franco's Notes — Primary Interests(Output).html", resultTemplate)
+        }
+    })
+}
 
 // extract from Html file and create Html according to the pulled data
-fs.readFile(filePath, { encoding: 'utf-8' }, async function (err, data) {
+fs.readFile(filePathToFetchCalendar, { encoding: 'utf-8' }, async function (err, data) {
     if (!err) {
         // Promise to fetch data from the html file read.
-        var parser = new DomParser();
         const dataPromise = await new Promise((resolve, reject) => {
 
             const root = HTMLParser.parse(data)
@@ -118,28 +131,30 @@ fs.readFile(filePath, { encoding: 'utf-8' }, async function (err, data) {
                     let interestOutText = text.slice(text.indexOf("Primary Interests/Interests"));
                     let interestText = interestOutText.split("\n")[0]
                     let interest = interestText.split("/")[interestText.split("/").length - 1]
-                    // let tooltipContent = buildHtml(h3.nextElementSibling.innerHTML)
-                    let tooltipContent = h3.nextElementSibling.innerText.replace("\n", " ").trim()
+                    let tooltipContent = h3.nextElementSibling.textContent.split('\n');
+                    tooltipContent = tooltipContent.map(tc => tc.trim())
+                    tooltipContent = tooltipContent.filter(tc => tc !== "").join("\n")
                     _tempData.push({
                         date: dayNumber,
                         interest: interest,
                         year: thisYear,
                         tooltipData: tooltipContent,
-                        tooltipDate: h3.outerHTML
+                        tooltipDate: h3.rawText
                     })
                 } else if (text.includes(" Interests ")) {
                     // let tooltipContent = buildHtml(h3.nextElementSibling.innerHTML);
-                    let tooltipContent = h3.nextElementSibling.innerText.replace("\n", " ").trim()
-
                     let interestText = text.slice(text.indexOf("Primary Interests "))
                     let _splitInterestText = interestText.split(" ")
                     let interest = _splitInterestText[_splitInterestText.length - 1]
+                    let tooltipContent = h3.nextElementSibling.textContent.split("\n");
+                    tooltipContent = tooltipContent.map(tc => tc.trim())
+                    tooltipContent = tooltipContent.filter(tc => tc !== "").join("\n")
                     _tempData.push({
                         date: dayNumber,
                         interest: interest,
                         year: thisYear,
                         tooltipData: tooltipContent,
-                        tooltipDate: h3.outerHTML
+                        tooltipDate: h3.rawText
                     })
                 }
                 // console.log(_tempData);
@@ -150,7 +165,8 @@ fs.readFile(filePath, { encoding: 'utf-8' }, async function (err, data) {
             })
         })
 
-        let _template = template.templateTop // Adding Top section to _template.
+        // let _template = calendarTemplate.templateTop // Adding Top section to _template.
+        let _template = "";
         let fillerValue = ""; // to hold interests
         let fillerClass = "empty"; // to hold interest classes
         let tooltipFiller = "";
@@ -160,7 +176,6 @@ fs.readFile(filePath, { encoding: 'utf-8' }, async function (err, data) {
             let previousYearValues = dataPromise.filter(dp => dp.year == year - 1)
             let maxDate = 0;
             let interestFound = false;
-            let writingPrevious = false;
             if (previousYearValues && previousYearValues.length > 0) {
                 // previousYearValues.reduce((val1, val2) => { val1 = val1 > val2.date ? val1 : val2.date }, 0)
                 maxDate = Math.max.apply(Math, previousYearValues.map((pvy) => pvy.date))
@@ -169,9 +184,9 @@ fs.readFile(filePath, { encoding: 'utf-8' }, async function (err, data) {
             _template +=
                 `<div class="calendar">
                 <!-- 100 -->` +
-                `<h1>` +
+                `<h3>` +
                 year + // Adding Year Number
-                `</h1>`;
+                `</h3>`;
 
             //fetch day number of a year
             let _days = numberOfDays(parseInt(year));
@@ -198,7 +213,6 @@ fs.readFile(filePath, { encoding: 'utf-8' }, async function (err, data) {
                             fillerValue = "";
                         }
                         _template += `<div class="day ${i} ${fillerClass.toLocaleLowerCase()}" tooltip-content="${getDateFromDay(year, i) + "&#xa;" + tooltipFiller.tooltipData}">${fillerValue[0] ? fillerValue[0] : ""}</div>`
-
                     }
 
                 }
@@ -209,20 +223,21 @@ fs.readFile(filePath, { encoding: 'utf-8' }, async function (err, data) {
                 }
             }
 
-            // to end the Body
+            // to end the Body and add styling
             if (year === years[years.length - 1]) {
-                _template += template.templateBottom;
+                _template += calendarTemplate.templateBottom;
             }
         })
 
         // write template to sampleOutput.html file
-        fs.writeFileSync('./sampleOutput-' + Date.now() + '.html', _template) // while in production mode
-        // fs.writeFileSync("sampleOutput-1658325053716.html", _template) // while in dev mode
+        // fs.writeFileSync('./sampleOutput-' + Date.now() + '.html', _template) // while in production mode
+        // fs.writeFileSync("sampleOutput-1658391492274.html", _template) // while in dev mode
 
+        // _template passed to save in Local Copy of Primary_Interests.html page
+        writeTemplateToHTML(_template);
     } else {
         // error
         console.log(err)
     }
-}
-);
+});
 

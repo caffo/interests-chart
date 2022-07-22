@@ -10,7 +10,6 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "dom-parser": "^0.1.6",
     "node-html-parser": "^5.3.3"
   }
 }
