@@ -25,14 +25,8 @@ exports.templateBottom = `
     .calendar{
         width: 600px;
         height: auto;
-        margin: 0 auto;
-        display: block;
+        margin: auto;
         background-color: #FDFCFB;
-    }
-
-    .calendar > * {
-        vertical-align: middle;
-        margin: 1px;
     }
 
     .calendar h3 {
@@ -40,19 +34,49 @@ exports.templateBottom = `
     }
 
     .tooltip {
+        display: none;
+        background: #FDFCFB;
+        border: 1px solid grey;
+        border-radius: 4px;
+        color: #585858;
+        bottom: 100%;
+        position: absolute;    
+        white-space: pre;
+        z-index: 1;
+        text-align: start;
+        overflow: auto;
+        height: auto;
+        width: fit-content;
+        text-transform: capitalize;
+
+    }
+
+    .days {
         display: inline-block;
+        border-top: 1px solid grey;
+        border-left: 1px solid grey;
+        margin: auto;
+    }
+
+    .days > * {
+        vertical-align: middle;
     }
 
     .day {
-        outline: 1px solid grey;
-        width: 20px;
+        border-right: 1px solid grey;
+        border-bottom: 1px solid grey;
+        box-sizing: border-box;
+        width: 23px;
         text-align: center;
         justify-content: center;
         height: 35px;
         display: inline-block;
         padding: 5px 0px;
         text-transform: lowercase;
-        font-size: larger;
+        line-height: 30px;
+        font-size: medium;
+        margin: 0px;
+        position: relative;
     }
 
     .day:empty {
@@ -60,6 +84,7 @@ exports.templateBottom = `
         background-color: white;
         color: white;
         position: relative;
+        display: inline-block;
     }
 
     .day:not(:empty) {
@@ -67,23 +92,37 @@ exports.templateBottom = `
         background-color: rgb(240, 240, 240);
         color: #585858;
         position: relative;
+        display: inline-block;
+
     }
 
-    .day:not(:empty):hover::after {
-        background: #FDFCFB;
-        border: 1px solid grey;
-        border-radius: 4px;
-        color: #585858;
-        bottom: 100%;
-        content: attr(data-content);
+    .day:not(:empty):hover .tooltip {
         display: block;
-        position: absolute;    
-        width: fit-content;
-        height: fit-content;
-        white-space: pre;
-        z-index: 1;
-        text-transform: capitalize;
-        text-align: start;
     }
+
+    .day:not(:empty):hover .tooltip li{
+        list-style-type: none!important;
+        padding: 0 !important;
+        margin: 0 !important;
+        line-height: 0 !important;
+        font-size: large;
+    }
+
+    .day:not(:empty):hover .tooltip ul{
+        list-style-type: none!important;
+        padding: 0 !important;
+        margin: 0 !important;
+        line-height: 0 !important;
+        font-size: large;
+    }
+
+    .day:not(:empty):hover .tooltip p{
+        list-style-type: none!important;
+        padding: 0 !important;
+        margin: 0 !important;
+        line-height: 20px !important;
+        font-size: large;
+    }
+
 
 </style>`    
