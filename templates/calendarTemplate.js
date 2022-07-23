@@ -30,7 +30,7 @@ exports.templateBottom = `
     }
 
     .calendar h3 {
-        margin: 15px 0px;
+        margin: 15px 0px !important;
     }
 
     .tooltip {
@@ -93,7 +93,6 @@ exports.templateBottom = `
         color: #585858;
         position: relative;
         display: inline-block;
-
     }
 
     .day:not(:empty):hover .tooltip {
@@ -107,7 +106,7 @@ exports.templateBottom = `
         margin-right: 0px !important;
         margin-bottom: 0px !important;
         line-height: 0 !important;
-        font-size: large;
+        font-size: medium;
     }
 
     .day:not(:empty):hover .tooltip li{
@@ -115,7 +114,7 @@ exports.templateBottom = `
         padding: 0 !important;
         margin: 0 5px !important;
         line-height: 0 !important;
-        font-size: large;
+        font-size: medium;
     }
 
     .day:not(:empty):hover .tooltip ul{
@@ -123,7 +122,7 @@ exports.templateBottom = `
         padding: 0 !important;
         margin: 0 5px !important;
         line-height: 0 !important;
-        font-size: large;
+        font-size: medium;
     }
 
     .day:not(:empty):hover .tooltip p{
@@ -131,7 +130,7 @@ exports.templateBottom = `
         padding: 0 !important;
         margin: 0 5px !important;
         line-height: 20px !important;
-        font-size: large;
+        font-size: medium;
     }
 
 
