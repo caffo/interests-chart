@@ -39,9 +39,10 @@ exports.templateBottom = `
         border: 1px solid grey;
         border-radius: 4px;
         color: #585858;
-        bottom: 100%;
-        position: absolute;    
+        position: relative;    
         white-space: pre;
+        bottom: 100%;
+        margin-left: -125px;
         z-index: 1;
         text-align: start;
         overflow: auto;
@@ -97,9 +98,11 @@ exports.templateBottom = `
 
     .day:not(:empty):hover .tooltip {
         display: block;
+        position: absolute;
     }
 
-    .day:not(:empty):hover .tooltip h3{
+
+    .tooltip h3{
         padding: 10px !important;
         margin-top: 5px !important;
         margin-left: 5px !important;
@@ -109,7 +112,7 @@ exports.templateBottom = `
         font-size: medium;
     }
 
-    .day:not(:empty):hover .tooltip li{
+    .tooltip li{
         list-style-type: none!important;
         padding: 0 !important;
         margin: 0 5px !important;
@@ -117,7 +120,12 @@ exports.templateBottom = `
         font-size: medium;
     }
 
-    .day:not(:empty):hover .tooltip ul{
+    .tooltip li::after{
+        content: "";
+        position: absolute;
+    }
+
+    .tooltip ul{
         list-style-type: none!important;
         padding: 0 !important;
         margin: 0 5px !important;
@@ -125,13 +133,12 @@ exports.templateBottom = `
         font-size: medium;
     }
 
-    .day:not(:empty):hover .tooltip p{
+    .tooltip p{
         list-style-type: none!important;
         padding: 0 !important;
         margin: 0 5px !important;
         line-height: 20px !important;
         font-size: medium;
     }
-
 
 </style>`    
