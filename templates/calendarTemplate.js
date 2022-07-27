@@ -103,7 +103,7 @@ exports.templateBottom = `
 
 
     .tooltip h3{
-        padding: 10px !important;
+        padding-top: 10px !important;
         margin-top: 5px !important;
         margin-left: 5px !important;
         margin-right: 0px !important;
