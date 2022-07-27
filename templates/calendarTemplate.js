@@ -120,25 +120,27 @@ exports.templateBottom = `
         font-size: medium;
     }
 
-    .tooltip li::after{
-        content: "";
-        position: absolute;
-    }
-
     .tooltip ul{
-        list-style-type: none!important;
         padding: 0 !important;
         margin: 0 5px !important;
         line-height: 0 !important;
         font-size: medium;
     }
 
+    .tooltip p:before {
+        content: "• "
+    }
+
     .tooltip p{
-        list-style-type: none!important;
         padding: 0 !important;
         margin: 0 5px !important;
         line-height: 20px !important;
         font-size: medium;
+    }
+
+    .tooltip a {
+        color: #00308F;
+        text-decoration: none;
     }
 
 </style>`    
