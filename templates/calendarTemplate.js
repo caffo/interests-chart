@@ -45,11 +45,10 @@ exports.templateBottom = `
         margin-left: -125px;
         z-index: 1;
         text-align: start;
-        overflow: auto;
         height: auto;
         width: fit-content;
         text-transform: capitalize;
-
+        padding: 5px;
     }
 
     .days {
@@ -97,18 +96,17 @@ exports.templateBottom = `
     }
 
     .day:not(:empty):hover .tooltip {
-        display: block;
+        display: flex;
+        flex-direction: column;
         position: absolute;
     }
 
-
     .tooltip h3{
-        padding-top: 10px !important;
-        margin-top: 5px !important;
+        margin-top: 0px !important;
         margin-left: 5px !important;
         margin-right: 0px !important;
         margin-bottom: 0px !important;
-        line-height: 0 !important;
+        line-height: 2em !important;
         font-size: medium;
     }
 
