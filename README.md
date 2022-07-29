@@ -2,6 +2,7 @@
 - Node.js 16.X script that pulls information from Primary Interests.html page
 - Creates Yearly Calendars based on the pulled information
 - Appends the Calendars to the original Primary Interests.html page
+- The Original HTML files are kept under test directory. The output will be generated in Primary Interests.html under test directory.
 
 ### Prerequisites
 - Node v 16.x.x / 14.x.x
@@ -13,7 +14,7 @@
     ````
     # This is a basic workflow that is manually triggered
 
-    name: Primary-Interests-Charts
+    name: Interests-Puller
 
     # Controls when the action will run. Workflow runs when manually triggered using the UI
     # or API.
@@ -30,17 +31,20 @@
           steps:
           # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
             - uses: actions/checkout@v3
+              with:
+                ref: feature/action
 
             # Runs a set of commands using the runners shell
-            - run: npm ci & npm run dev
+            - run: npm install
+            - run: npm run dev
       
             - uses: stefanzweifel/git-auto-commit-action@v4
               with:
-                commit_message: Apply HTML changes to Primary Interests.html
+                commit_message: Apply HTML changes to Primary Interests.html!
     ````
-- The action when triggered manually, checks out the branch, cache installs the npm dependencies and executes the pullInterests.js script.
-- After the script execution, the action automatically commits the changes to current repository with Primary Interests.html being overridden with new content     containing the Yearly Calendars.
-- On git pull in the repository, one can view the modified Primary Interests.html file.
+- The action when triggered manually, checks out the branch, installs the npm dependencies and executes the pullInterests.js script.
+- After the script execution, the action automatically commits the changes to current repository with Primary Interests.html being overridden with new content, containing the Yearly Calendars.
+- On git pull in the feature/action, one can view the modified Primary Interests.html file.
 
 ### Steps to Trigger the Workflow
 - Go to Actions tab in the repository,
