@@ -112,12 +112,14 @@ function buildToolTipHTML(elem) {
 // Write html to original primary interests page
 function writeTemplateToHTML(_template) {
     // Read local copy of primary_interests.html
+    // console.log(_template);
     fs.readFile(filePathToSaveCalendar, { encoding: 'utf-8' }, function (err, data) {
         let resultTemplate = primaryInterestsTemplate.templateTop
         if (!err) {
             const root = HTMLParser.parse(data);
             const main_section = root.getElementsByTagName("section")[0];
             main_section.innerHTML += `<h1>Primary Interests/Calendar</h1>` + _template;
+            // console.log(main_section);
             resultTemplate += main_section + primaryInterestsTemplate.templateBottom;
             // following operation overwrites the original file so output added to an extra file for testing purposes.
             // after testing, can be merged with the Original Primary Interests Html File.
