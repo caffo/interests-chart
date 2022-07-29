@@ -1,30 +1,40 @@
-# This is a basic workflow to help you get started with Actions
-
-name: Interests-Puller
-
-# Controls when the workflow will run
 on:
-  # Allows you to run this workflow manually from the Actions tab
-  workflow_dispatch:
+  push:
+    branches:
+      - master
+  schedule:
+    -   cron: "0 0 * * *"
 
-# A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  # This workflow contains a single job called "build"
-  pullInterests:
-    # The type of runner that the job will run on
-    runs-on: windows-latest
-
-    # Steps represent a sequence of tasks that will be executed as part of the job
+  deploy:
+    runs-on: ubuntu-latest
+    name: Generate
+    timeout-minutes: 5
     steps:
-      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      - uses: actions/checkout@v3
+      - name: Checkout repo
+        uses: actions/checkout@v2
+      - name: Setup Node environment
+        uses: actions/setup-node@v2.1.5
+      - name: Install Node modules
+        run: |
+          npm install
+      - name: Generate HTML From Roam
+        uses: dvargas92495/generate-roam-site-action@2.9.3
         with:
-          ref: feature/action
-        
-      # Runs a set of commands using the runners shell
-      - run: npm install
-      - run: npm run dev
-      
-      - uses: stefanzweifel/git-auto-commit-action@v4
+          roam_username: rodrigo@rodrigofranco.com
+          roam_password: ${{ secrets.ROAM_PASSWORD }}
+          roam_graph: rodrigofranco
+      - name: Pull Interests and Create Calendars
+        run: |
+           npm install
+           npm run dev
+      - name: Copy includes
+        run: cp -fR includes/* out/ 
+      - name: Delete downloads
+        run: rm -fR downloads
+      - name: Generate feed
+        run:  node feed; cp atom.xml out/
+      - name: Commit changes
+        uses: elstudio/actions-js-build/commit@v3
         with:
-          commit_message: Apply HTML changes to Primary Interests.html!
+          commitMessage: Automated snapshot
