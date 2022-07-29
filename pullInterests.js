@@ -4,8 +4,8 @@ const fs = require('fs'),
     DOMParser = require('dom-parser'),
     calendarTemplate = require('./templates/calendarTemplate'),
     primaryInterestsTemplate = require("./templates/primary_interests_template"),
-    filePathToFetchCalendar = path.join(__dirname, "Rodrigo Franco's Notes — Primary Interests_Calendar.html"), // Iteration here for multiple files
-    filePathToSaveCalendar = path.join(__dirname, "Rodrigo Franco's Notes — Primary Interests.html")
+    filePathToFetchCalendar = path.join(__dirname, "./test/Rodrigo Franco's Notes — Primary Interests_Calendar.html"), // Iteration here for multiple files
+    filePathToSaveCalendar = path.join(__dirname, "./test/Rodrigo Franco's Notes — Primary Interests.html")
 
 
 const months = ["January", "February", "March", 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'] // months array to match Month Name with Month Number
@@ -122,7 +122,7 @@ function writeTemplateToHTML(_template) {
             resultTemplate += main_section + primaryInterestsTemplate.templateBottom;
             // following operation overwrites the original file so output added to an extra file for testing purposes.
             // after testing, can be merged with the Original Primary Interests Html File.
-            fs.writeFileSync("./Rodrigo Franco's Notes — Primary Interests.html", resultTemplate)
+            fs.writeFileSync(filePathToSaveCalendar, resultTemplate)
         }
     })
 }
