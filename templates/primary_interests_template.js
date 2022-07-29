@@ -19,14 +19,12 @@ exports.templateTop = `<!-- saved from url=(0052)https://www.rodrigofranco.com/P
   <link rel="icon" type="image/png" sizes="32x32" href="https://www.rodrigofranco.com/favicon-32x32.png">
   <link rel="icon" type="image/png" sizes="96x96" href="https://www.rodrigofranco.com/favicon-96x96.png">
   <link rel="icon" type="image/png" sizes="16x16" href="https://www.rodrigofranco.com/favicon-16x16.png">
+  <link href="http://fonts.cdnfonts.com/css/redaction" rel="stylesheet">
   <link rel="manifest" href="https://www.rodrigofranco.com/manifest.json">
   <meta name="msapplication-TileColor" content="#ffffff">
   <meta name="msapplication-TileImage" content="/ms-icon-144x144.png">
   <meta name="theme-color" content="#ffffff">
-  <link href="./Rodrigo Franco&#39;s Notes — Primary Interests_files/dece2d1ab0d03c2c565e133de227859412e0260c.css"
-    rel="stylesheet" type="text/css">
-
-
+  <link href="https://d33wubrfki0l68.cloudfront.net/bundles/dece2d1ab0d03c2c565e133de227859412e0260c.css" rel="stylesheet" type="text/css">
   <link rel="alternate" type="application/atom+xml" href="https://www.rodrigofranco.com/atom.xml">
   <script>
     var Hyphenopoly = {
@@ -40,7 +38,7 @@ exports.templateTop = `<!-- saved from url=(0052)https://www.rodrigofranco.com/P
       }
     };
   </script>
-  <script src="./Rodrigo Franco&#39;s Notes — Primary Interests_files/hyphenopoly_loader.js.download"></script>
+  <script src="https://d33wubrfki0l68.cloudfront.net/js/01b4a5e893b6871097711e41d481e7ea121aff12/hyphenopoly_loader.js"></script>
   <script src="./Rodrigo Franco&#39;s Notes — Primary Interests_files/Hyphenopoly.js.download"></script>
   <style>
   
@@ -95,10 +93,9 @@ exports.templateTop = `<!-- saved from url=(0052)https://www.rodrigofranco.com/P
     </a>
     <div><a href="https://www.rodrigofranco.com/">About</a><a href="https://www.rodrigofranco.com/Now.html">Now</a>
     </div>
-  </header>
-  <section class="main">`
+  </header>`
 
-exports.templateBottom = `</section>
+exports.templateBottom = `
 <section class="references" style="display: block;">
   <header>
     <h3>Page References</h3>
@@ -115,9 +112,7 @@ exports.templateBottom = `</section>
   <a href="https://www.rodrigofranco.com/Website_Changelog.html">Changelog</a>
   <a href="https://www.rodrigofranco.com/How_is_this_website_made.html">How?</a>
 </footer>
-<script
-  src="./Rodrigo Franco&#39;s Notes — Primary Interests_files/cd5e6000f210a72332d777d64e29e992982ecfed.js.download">
-</script>
+<script src="https://d33wubrfki0l68.cloudfront.net/bundles/cd5e6000f210a72332d777d64e29e992982ecfed.js"></script>
 
 </body>
 
