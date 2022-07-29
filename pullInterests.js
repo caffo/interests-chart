@@ -119,11 +119,10 @@ function writeTemplateToHTML(_template) {
             const root = HTMLParser.parse(data);
             const main_section = root.getElementsByTagName("section")[0];
             main_section.innerHTML += `<h1>Primary Interests/Calendar</h1>` + _template;
-            // console.log(main_section);
             resultTemplate += main_section + primaryInterestsTemplate.templateBottom;
             // following operation overwrites the original file so output added to an extra file for testing purposes.
             // after testing, can be merged with the Original Primary Interests Html File.
-            fs.writeFileSync("./Rodrigo Franco's Notes — Primary Interests(Output).html", resultTemplate)
+            fs.writeFileSync("./Rodrigo Franco's Notes — Primary Interests.html", resultTemplate)
         }
     })
 }
