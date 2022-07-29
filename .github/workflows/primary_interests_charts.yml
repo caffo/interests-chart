@@ -20,6 +20,9 @@ jobs:
       - uses: actions/checkout@v3
         with:
           ref: feature/action
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 16
       # Runs a set of commands using the runners shell
       - run: npm install & npm run dev
       
