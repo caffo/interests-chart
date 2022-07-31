@@ -1,6 +1,6 @@
 # This is a basic workflow to help you get started with Actions
 
-name: action-interests-puller
+name: primary-interests-puller
 description: This action pulls interests from HTML Page and Saves output into another HTML Page.
 
 branding: 
