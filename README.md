@@ -38,5 +38,5 @@
 - To Trigger this Action, use code below 
     ````
     - name: primary-interests-puller
-      uses: caffo/interests-chart@0.0.2 #owner/action@v
+      uses: caffo/interests-chart@v0.0.3 #owner/action@version
     ````
