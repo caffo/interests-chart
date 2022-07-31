@@ -19,7 +19,7 @@ exports.templateTop = `<!-- saved from url=(0052)https://www.rodrigofranco.com/P
   <link rel="icon" type="image/png" sizes="32x32" href="https://www.rodrigofranco.com/favicon-32x32.png">
   <link rel="icon" type="image/png" sizes="96x96" href="https://www.rodrigofranco.com/favicon-96x96.png">
   <link rel="icon" type="image/png" sizes="16x16" href="https://www.rodrigofranco.com/favicon-16x16.png">
-  <link href="http://fonts.cdnfonts.com/css/redaction" rel="stylesheet">
+  <link href="https://fonts.cdnfonts.com/css/redaction" rel="stylesheet">
   <link rel="manifest" href="https://www.rodrigofranco.com/manifest.json">
   <meta name="msapplication-TileColor" content="#ffffff">
   <meta name="msapplication-TileImage" content="/ms-icon-144x144.png">
