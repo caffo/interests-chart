@@ -4,8 +4,8 @@ const fs = require('fs'),
     DOMParser = require('dom-parser'),
     calendarTemplate = require('./templates/calendarTemplate'),
     primaryInterestsTemplate = require("./templates/primary_interests_template"),
-    filePathToFetchCalendar = path.join("out/Rodrigo Franco's Notes — Primary Interests_Calendar.html"), // Iteration here for multiple files
-    filePathToSaveCalendar = path.join("out/Rodrigo Franco's Notes — Primary Interests.html")
+    filePathToFetchCalendar = path.join("out/Primary_InterestsCalendar.html"), // Iteration here for multiple files
+    filePathToSaveCalendar = path.join("out/Primary_Interests.html")
 
 
 const months = ["January", "February", "March", 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'] // months array to match Month Name with Month Number

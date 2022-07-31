@@ -36,4 +36,7 @@
 
 ### Steps to Trigger the Workflow
 - To Trigger this Action, use code below 
-
+    ````
+    - name: primary-interests-puller
+      uses: caffo/interests-chart@0.0.2 #owner/action@v
+    ````
