@@ -93,9 +93,9 @@ exports.templateTop = `<!-- saved from url=(0052)https://www.rodrigofranco.com/P
     </a>
     <div><a href="https://www.rodrigofranco.com/">About</a><a href="https://www.rodrigofranco.com/Now.html">Now</a>
     </div>
-  </header>`
+  </header><section class="main">`
 
-exports.templateBottom = `
+exports.templateBottom = `</section>
 <section class="references" style="display: block;">
   <header>
     <h3>Page References</h3>
