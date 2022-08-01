@@ -117,10 +117,11 @@ function writeTemplateToHTML(_template) {
         let resultTemplate = primaryInterestsTemplate.templateTop
         if (!err) {
             const root = HTMLParser.parse(data);
-            const main_section = root.getElementsByTagName("section")[0];
+            let main_section = root.getElementsByTagName("section")[0];
+            let article = main_section.getElementsByTagName("article")[0];
+            main_section.innerHTML = article;
             main_section.innerHTML += `<h1>Primary Interests/Calendar</h1>` + _template;
-            // console.log(main_section);
-            resultTemplate += main_section + primaryInterestsTemplate.templateBottom;
+            resultTemplate += main_section.innerHTML + primaryInterestsTemplate.templateBottom;
             // following operation overwrites the original file so output added to an extra file for testing purposes.
             // after testing, can be merged with the Original Primary Interests Html File.
             fs.writeFileSync(filePathToSaveCalendar, resultTemplate)
@@ -153,13 +154,7 @@ fs.readFile(filePathToFetchCalendar, { encoding: 'utf-8' }, async function (err,
 
                     // Read the Tooltip Content
                     let tooltipContent = h3.nextElementSibling.innerHTML.split("\n");
-                    tooltipContent = tooltipContent.map(ttc => {
-                        if (ttc.indexOf('id') > -1) {
-                            return ttc.trim().split(" ")[0] + '>'
-                        } else {
-                            return ttc.trim()
-                        }
-                    })
+
                     tooltipContent = buildToolTipHTML(tooltipContent.join(" "));
                     _tempData.push({
                         date: dayNumber,
@@ -175,13 +170,7 @@ fs.readFile(filePathToFetchCalendar, { encoding: 'utf-8' }, async function (err,
 
                     // Read the Tooltip Content
                     let tooltipContent = h3.nextElementSibling.innerHTML.split("\n");
-                    tooltipContent = tooltipContent.map(ttc => {
-                        if (ttc.indexOf('id') > -1) {
-                            return ttc.trim().split(" ")[0] + '>'
-                        } else {
-                            return ttc.trim()
-                        }
-                    })
+
                     tooltipContent = buildToolTipHTML(tooltipContent.join(" "));
                     _tempData.push({
                         date: dayNumber,
