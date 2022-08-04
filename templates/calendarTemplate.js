@@ -127,10 +127,11 @@ exports.templateBottom = `
 
     .day:empty {
         cursor: auto;
-        background-color: var(--bg-color);
+        background-color: var(--lighter-divider-color);
         color: var(--text-color);
         position: relative;
         display: inline-block;
+        opacity: 0.8;
     }
 
     .day:not(:empty) {
