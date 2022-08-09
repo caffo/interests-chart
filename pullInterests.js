@@ -120,7 +120,7 @@ function writeTemplateToHTML(_template) {
             let main_section = root.getElementsByTagName("section")[0];
             let article = main_section.getElementsByTagName("article")[0];
             main_section.innerHTML = article;
-            main_section.innerHTML += `<h1>Primary Interests/Calendar</h1>` + _template;
+            main_section.innerHTML += `<div class="interests-calendars"><h1>Primary Interests/Calendar</h1>` + _template;
             resultTemplate += main_section.innerHTML + primaryInterestsTemplate.templateBottom;
             // following operation overwrites the original file so output added to an extra file for testing purposes.
             // after testing, can be merged with the Original Primary Interests Html File.
