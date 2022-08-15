@@ -12,6 +12,7 @@
   "dependencies": {
     "dom-parser": "^0.1.6",
     "jsdom": "^20.0.0",
+    "node-fetch": "^2.6.1",
     "node-html-parser": "^5.3.3"
   }
 }
