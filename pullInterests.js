@@ -127,7 +127,6 @@ async function writeTemplateToHTML(_template) {
             const primary_interests_html = HTMLParser.parse(templ);
             let main_section = primary_interests_html.getElementsByTagName("section")[0];
             let article = main_section.getElementsByTagName("article")[0];
-            primary_interests_html.querySelector(".interests-calendars").remove();
             article.insertAdjacentHTML("afterend", `<div class="interests-calendars"><h1>Primary Interests/Calendar</h1>` + _template);
             fs.writeFileSync(filePathToSaveCalendar, primary_interests_html.innerHTML);
             console.log("Primary Interests File Written Over!");
@@ -243,7 +242,6 @@ fs.readFile(filePathToFetchCalendar, { encoding: 'utf-8' }, async function (err,
                             return cy[0] == fillerValue[0] && cy.toLocaleLowerCase() != fillerValue.toLocaleLowerCase()
                         })
                         if (filterResult.length > 0) {
-                            console.log(fillerValue)
                             if (interestIndicators.indexOf(fillerValue[0].toLocaleLowerCase()) == -1) {
                                 interestIndicators.push(fillerValue[0].toLocaleLowerCase());
                             } else {
