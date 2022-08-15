@@ -111,7 +111,7 @@ function buildToolTipHTML(elem) {
 }
 
 // Write html to original primary interests page
-function writeTemplateToHTML(_template) {
+async function writeTemplateToHTML(_template) {
     await fetch('https://www.rodrigofranco.com/Primary_Interests.html')
         .then(function (response) {
             switch (response.status) {
