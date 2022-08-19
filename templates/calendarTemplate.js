@@ -70,7 +70,7 @@ exports.templateBottom = `
         background-image: none!important;
     } 
 
-    .interests-calendars {
+    .Calendars {
         margin-bottom: 50px;
     }
 
