@@ -127,7 +127,9 @@ async function writeTemplateToHTML(_template) {
             const primary_interests_html = HTMLParser.parse(templ);
             let main_section = primary_interests_html.getElementsByTagName("section")[0];
             let article = main_section.getElementsByTagName("article")[0];
-            article.insertAdjacentHTML("afterend", `<div class="interests-calendars"><h1>Primary Interests/Calendar</h1>` + _template);
+            main_section.querySelectorAll(".interests-calendars").forEach(elem => elem.remove());
+            main_section.querySelectorAll('.Calendars').forEach(elem => elem.remove());
+            article.insertAdjacentHTML("afterend", `<div class="Calendars"><h1>Primary Interests/Calendar</h1>` + _template);
             fs.writeFileSync(filePathToSaveCalendar, primary_interests_html.innerHTML);
             console.log("Primary Interests File Written Over!");
         })
