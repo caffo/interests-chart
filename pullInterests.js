@@ -116,9 +116,18 @@ function writeTemplateToHTML(_template) {
             const root = HTMLParser.parse(data);
             let main_section = root.getElementsByTagName("section")[0];
             let article = main_section.getElementsByTagName("article")[0];
+            let uls = article.getElementsByTagName('ul')[0]
+            let foundPlaceToInjectAfter = "";
+            let lis = uls.getElementsByTagName('li');
+            for (let index = 0; index < lis.length; index++) {
+                if (lis[index].textContent.indexOf("If I had a lot of free") > -1) {
+                    foundPlaceToInjectAfter = lis[index];
+                    break;
+                }
+            }
             main_section.querySelectorAll(".interests-calendars").forEach(elem => elem.remove());
             main_section.querySelectorAll('.Calendars').forEach(elem => elem.remove());
-            article.insertAdjacentHTML("afterend", `<div class="Calendars"><h1>Primary Interests/Calendar</h1>` + _template);
+            foundPlaceToInjectAfter.insertAdjacentHTML("afterend", `<div class="Calendars"><h2>Calendar</h2>` + _template);
             // following operation overwrites the original file so output added to an extra file for testing purposes.
             // after testing, can be merged with the Original Primary Interests Html File.
             fs.writeFileSync(filePathToSaveCalendar, root.innerHTML);
