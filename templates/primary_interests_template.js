@@ -24,7 +24,6 @@ exports.templateTop = `<!-- saved from url=(0052)https://www.rodrigofranco.com/P
   <meta name="msapplication-TileColor" content="#ffffff">
   <meta name="msapplication-TileImage" content="/ms-icon-144x144.png">
   <meta name="theme-color" content="#ffffff">
-  <link href="https://d33wubrfki0l68.cloudfront.net/bundles/dece2d1ab0d03c2c565e133de227859412e0260c.css" rel="stylesheet" type="text/css">
   <link rel="alternate" type="application/atom+xml" href="https://www.rodrigofranco.com/atom.xml">
   <script>
     var Hyphenopoly = {
