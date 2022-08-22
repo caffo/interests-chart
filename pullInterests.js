@@ -112,7 +112,6 @@ function buildToolTipHTML(elem) {
 // Write html to original primary interests page
 function writeTemplateToHTML(_template) {
     fs.readFile(filePathToSaveCalendar, { encoding: 'utf-8' }, function (err, data) {
-        let resultTemplate = primaryInterestsTemplate.templateTop
         if (!err) {
             const root = HTMLParser.parse(data);
             let main_section = root.getElementsByTagName("section")[0];
