@@ -74,18 +74,19 @@ function modifyOriginalDate(dateToModify) {
 
 // Calculate Day Number in a Year according to Date
 function getDayOfYear(date = new Date()) {
-    const timestamp1 = Date.UTC(
-        date.getFullYear(),
-        date.getMonth(),
-        date.getDate(),
-    );
-    const timestamp2 = Date.UTC(date.getFullYear(), 0, 0);
-
-    const differenceInMilliseconds = timestamp1 - timestamp2;
-
-    const differenceInDays = differenceInMilliseconds / 1000 / 60 / 60 / 24;
-
-    return differenceInDays;
+    let startOfYear = "";
+    let dayOfYear = 1;
+    if (date.toISOString().indexOf('-01-01') > -1) {
+        if(date.getMonth() == 11 && date.getDate() == 31) {
+            dayOfYear = 1;
+        }
+    } else {
+        startOfYear = new Date(date.getFullYear(), 0, 0); // 1st January of same year as in `date`
+        const diff = (date - startOfYear) + ((startOfYear.getTimezoneOffset() - date.getTimezoneOffset()) * 60 * 1000);
+        dayOfYear = Math.floor(diff / (1000 * 60 * 60 * 24));
+    }
+    
+    return dayOfYear;
 }
 
 // to find number of days in a year (for number of divs in Calendar of a year)
@@ -149,9 +150,9 @@ fs.readFile(filePathToFetchCalendar, { encoding: 'utf-8' }, async function (err,
 
             dataDivs.map((h3, index) => {
                 let text = h3.nextElementSibling.structuredText;
-                let dayNumber = modifyOriginalDate(h3.structuredText);// so to find Day Number in a Year
-                let thisYear = dayNumber.split("-")[0];
-                dayNumber = getDayOfYear(new Date(dayNumber));
+                let dayNumberOriginal = modifyOriginalDate(h3.structuredText);// so to find Day Number in a Year
+                let thisYear = dayNumberOriginal.split("-")[0];
+                let dayNumber = getDayOfYear(new Date(dayNumberOriginal));
                 // fetch Primary Interest Data from the parsed text
                 if (text.includes("/Category/")) {
                     let interestOutText = text.slice(text.indexOf("Primary Interests/Category"));
@@ -201,18 +202,19 @@ fs.readFile(filePathToFetchCalendar, { encoding: 'utf-8' }, async function (err,
         let interestIndicators = [];
         let currentYearInterestIndicators = [];
         let _charIndex = 0;
-
         years.forEach(function (year) {
             // Adding Calendar and Year Header Div to _template
-            let previousYearValues = dataPromise.filter(dp => dp.year == year - 1)
+            let previousYearValues = dataPromise.filter(dp => dp.year == year - 1) // e.g 2022 for year 2023
             let maxDate = 0;
             let interestFound = false;
+            
             if (previousYearValues && previousYearValues.length > 0) {
                 maxDate = Math.max.apply(Math, previousYearValues.map((pvy) => pvy.date))
             }
             previousYearValues = previousYearValues.filter(pvy => pvy.date == maxDate)
+            
             previousYearValues.map((pvy) => {
-                if (interestIndicators.indexOf(pvy.interest.trim()[0]) == -1) {
+                if (interestIndicators.indexOf(pvy.interest.trim()[0].toLocaleLowerCase()) == -1) {
                     interestIndicators.push(pvy.interest.trim()[0].toLocaleLowerCase())
                 }
             })
@@ -221,21 +223,27 @@ fs.readFile(filePathToFetchCalendar, { encoding: 'utf-8' }, async function (err,
                 <!-- 100 -->` +
                 `<h3>` +
                 year + // Adding Year Number
-                `</h3><div class="days">`;
+            `</h3><div class="days">`;
 
             //fetch day number of a year
-            let _days = numberOfDays(parseInt(year));
-
+            let _days = numberOfDays(parseInt(year)); // 2023
+            // console.log(year, _days);
             // Iteration to add day divs of a year in the _template
+            console.log("------------------------------------ Year " + year +  " ----------------------------------------------");
             for (let i = 1; i <= _days; i++) {
-                if (dataPromise.filter(dp => dp.date === i && dp.year == year).length > 0) {
+                // where interest exists or changes on a day
+                console.log("I - ",i);
+                if (dataPromise.filter(dp => dp.date == i && dp.year == year).length > 0) {
                     interestFound = true;
-                    tooltipFiller = dataPromise.filter(dp => dp.date === i && dp.year == year)[0]
-                    fillerValue = dataPromise.filter(dp => dp.date === i && dp.year == year)[0].interest.trim()
+                    tooltipFiller = dataPromise.filter(dp => dp.date === i && dp.year == year)[0];
+                    fillerValue = dataPromise.filter(dp => dp.date === i && dp.year == year)[0].interest.trim();
                     fillerClass = fillerValue;
+                    // dates where previous interest will continue
                     if (currentYearInterestIndicators.indexOf(fillerValue) > -1 && interestIndicators.indexOf(fillerValue[0].toLocaleLowerCase()) > -1) {
-                        fillerValue = fillerValue;
-                    } else {
+                        // console.log("if - " , i, fillerValue, fillerClass);
+                    } 
+                    // dates where an interest changes
+                    else {
                         currentYearInterestIndicators.push(fillerValue);
                         let filterResult = currentYearInterestIndicators.filter(cy => {
                             return cy[0] == fillerValue[0] && cy.toLocaleLowerCase() != fillerValue.toLocaleLowerCase()
@@ -261,19 +269,26 @@ fs.readFile(filePathToFetchCalendar, { encoding: 'utf-8' }, async function (err,
                             }
                         }
                     }
-                    _template += `<div class="day ${i} ${fillerClass.toLocaleLowerCase().trim()}">${fillerValue.trim()[0]}<div class="tooltip">${getDateFromDay(year, i) + "&#xa;" + tooltipFiller.tooltipData}</div></div>`
+
+                    _template += `<div class="day ${i} ${fillerClass.toLocaleLowerCase().trim()}">${fillerValue.trim()[0]}<div class="tooltip">${getDateFromDay(year, i) + "&#xa;" + tooltipFiller.tooltipData}</div></div>`;
                 } else {
                     // Marking till today only 
-                    if (!interestFound && i < today && year == currentYear) {
-                        let _holder = previousYearValues[0];
-                        tooltipFiller = _holder.tooltipData;
-                        fillerValue = _holder.interest.trim();
-                        fillerClass = fillerValue;
-                        if (interestIndicators.indexOf(fillerValue[0].toLocaleLowerCase()) == -1) {
-                            interestIndicators.push(fillerValue[0].toLocaleLowerCase())
+
+                    // fill dates with previous years' values
+                    if (!interestFound && i < today) {
+                        if (previousYearValues.length > 0) {
+                            let _holder = previousYearValues[0];
+                            tooltipFiller = _holder.tooltipData;
+                            fillerValue = _holder.interest.trim();
+                            fillerClass = fillerValue
+                            if (interestIndicators.indexOf(fillerValue[0].toLocaleLowerCase()) == -1) {
+                                interestIndicators.push(fillerValue[0].toLocaleLowerCase())
+                            }
+                            _template += `<div class="day ${i} ${fillerClass.toLocaleLowerCase()}">${fillerValue[0]}<div class="tooltip">${getDateFromDay(year, i) + tooltipFiller}</div></div>`
+                        } else {
+                            // console.log("no previous year - " , year);
                         }
-                        _template += `<div class="day ${i} ${fillerClass.toLocaleLowerCase()}">${fillerValue[0]}<div class="tooltip">${getDateFromDay(year, i) + tooltipFiller}</div></div>`
-                    } else {
+                    } else {// or dates will be empty
                         if ((year == currentYear && i > today) || !interestFound) {
                             fillerClass = 'empty';
                             fillerValue = "";
@@ -302,4 +317,3 @@ fs.readFile(filePathToFetchCalendar, { encoding: 'utf-8' }, async function (err,
         console.log(err)
     }
 });
-
