@@ -227,12 +227,9 @@ fs.readFile(filePathToFetchCalendar, { encoding: 'utf-8' }, async function (err,
 
             //fetch day number of a year
             let _days = numberOfDays(parseInt(year)); // 2023
-            // console.log(year, _days);
             // Iteration to add day divs of a year in the _template
-            console.log("------------------------------------ Year " + year +  " ----------------------------------------------");
             for (let i = 1; i <= _days; i++) {
                 // where interest exists or changes on a day
-                console.log("I - ",i);
                 if (dataPromise.filter(dp => dp.date == i && dp.year == year).length > 0) {
                     interestFound = true;
                     tooltipFiller = dataPromise.filter(dp => dp.date === i && dp.year == year)[0];
