@@ -1,6 +1,7 @@
 const fs = require('fs'),
     path = require('path'),
     HTMLParser = require('node-html-parser'),
+    jsDom = require('jsdom'),
     DOMParser = require('dom-parser'),
     fetch = require('node-fetch'),
     calendarTemplate = require('./templates/calendarTemplate'),
@@ -118,6 +119,8 @@ function writeTemplateToHTML(_template) {
             let main_section = root.getElementsByTagName("section")[0];
             let article = main_section.getElementsByTagName("article")[0];
             let uls = article.getElementsByTagName('ul')[0]
+            let allCalendarStyles = uls.getElementsByTagName('style');
+            let allCalendarScripts = uls.getElementsByTagName("script");
             let foundPlaceToInjectAfter = "";
             let lis = uls.getElementsByTagName('li');
             for (let index = 0; index < lis.length; index++) {
@@ -126,9 +129,12 @@ function writeTemplateToHTML(_template) {
                     break;
                 }
             }
+            allCalendarStyles.forEach(elem => elem.remove());
+            allCalendarScripts.forEach(elem => elem.remove());
             main_section.querySelectorAll(".interests-calendars").forEach(elem => elem.remove());
-            main_section.querySelectorAll('.Calendars').forEach(elem => elem.remove());
+            main_section.querySelectorAll(".Calendars").forEach(elem => elem.remove());
             foundPlaceToInjectAfter.insertAdjacentHTML("afterend", `<div class="Calendars"><h2>Calendar</h2>` + _template);
+            // console.log(root.innerHTML);
             // following operation overwrites the original file so output added to an extra file for testing purposes.
             // after testing, can be merged with the Original Primary Interests Html File.
             fs.writeFileSync(filePathToSaveCalendar, root.innerHTML);
@@ -314,3 +320,4 @@ fs.readFile(filePathToFetchCalendar, { encoding: 'utf-8' }, async function (err,
         console.log(err)
     }
 });
+

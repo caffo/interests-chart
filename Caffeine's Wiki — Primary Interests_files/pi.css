@@ -1,0 +1,94 @@
+  .calendar .day {
+    background-image: url('pi.png');
+    background-repeat: no-repeat;
+    background-position: -1000px -1000px;
+    font-size: 0;
+  }
+
+  .calendar .books {
+    background-image: url('bo.png');
+    background-position: -3px -2px;
+  }
+
+  .calendar .games {
+    background-image: url('bo.png');
+    background-position: -35px -2px;
+  }
+
+  .calendar .manga {
+    background-position: -1px 1px;
+  }
+
+  .calendar .system {
+    background-position: -103px -35px;
+  }
+
+  .calendar .coding {
+    background-image: url('c.png');
+    background-position: -3px -1px; 
+  }
+
+  .calendar .rest {
+    background-image: url('co.png');
+    background-position: -8px -77px;
+  }
+
+  .calendar .coffee {
+   background-image: url('co.png'); 
+   background-position: -7px -5px;
+  }
+
+  .calendar .writing {
+    background-image: url('co.png');
+    background-position: -5px -39px;
+  }
+  
+  .calendar .travel {
+    background-image: url('t.png');
+    background-position: -3px 3px;    
+  }
+
+  @media (prefers-color-scheme: dark) {
+    .calendar .books {
+      background-image: url('bo.png');
+      background-position: -2px -38px;
+    }
+
+    .calendar .games {
+        background-image: url('bo.png');
+        background-position: -35px -38px;
+      }
+
+     .calendar  .manga {
+        background-position: -1px -79px;
+      }
+
+     .calendar  .system {
+        background-position: -103px -115px;
+      }
+
+      .calendar .coding {
+       background-image: url('c.png');
+       background-position: -27px 0px; 
+      }
+
+       .calendar .rest {
+        background-image: url('co.png');
+        background-position: -43px -77px;
+      }
+
+      .calendar .coffee {
+       background-image: url('co.png'); 
+       background-position: -43px -5px;
+      }
+
+      .calendar .writing {
+        background-image: url('h.png');
+        background-position: -3px 3px;
+      }
+      
+      .calendar .travel {
+        background-image: url('t.png');
+        background-position: -31px 3px;    
+      }
+}

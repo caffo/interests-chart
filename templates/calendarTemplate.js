@@ -10,62 +10,33 @@ exports.templateTop = `<!DOCTYPE html>
 exports.templateBottom = `
 </div>
 <style> 
-:root {
-    --body-font: "Degular Text";
-    --header-font: "Redaction 35";
-}
-@media (prefers-color-scheme: dark) {
     :root {
-    --bg-color: #35363a;
-    --text-color: #c5c5c5;
-    --link-color: #c5c5c5;
-    --code-block-bg: #252528;
-    --header-color: rgba(255, 255, 255, 0.5);
-    --divider-color: rgba(255, 255, 255, 0.15);
-    --lighter-divider-color: rgba(255, 255, 255, 0.05);
+        --body-font: "Degular Text";
+        --header-font: "Redaction 35";
     }
-}
-@media (prefers-color-scheme: light) {
-    :root {
-    --bg-color: #fdfcfb;
-    --text-color: #3a3a3a;
-    --link-color: #000;
-    --code-block-bg: #f3f3f3;
-    --header-color: rgba(0, 0, 0, 0.65);
-    --divider-color: rgba(0, 0, 0, 0.1);
-    --lighter-divider-color: rgba(0, 0, 0, 0.05);
-    }
-}
-
-    html {
-        font-family: serif
-    }
-    body{
-        background-color: var(--bg-color) !important;
-        color: var(--text-color) !important;
-        font-family: var(--body-font) !important;
-    }
-
-    p {
-        font-family: var(--body-font) !important;
-    }
-
-    h1 {
-        color: var(--text-color);
-        font-family: var(--header-font);
-    }
-
-    section > h1 {
-        font-size: xxx-large;
-
-    }
-
-    @media (max-width: 600px) {
-        section > h1 {
-            font-size: xx-large;
+    @media (prefers-color-scheme: dark) {
+        :root {
+        --bg-color: #35363a;
+        --text-color: #c5c5c5;
+        --link-color: #c5c5c5;
+        --code-block-bg: #252528;
+        --header-color: rgba(255, 255, 255, 0.5);
+        --divider-color: rgba(255, 255, 255, 0.15);
+        --lighter-divider-color: rgba(255, 255, 255, 0.05);
         }
     }
-    
+    @media (prefers-color-scheme: light) {
+        :root {
+        --bg-color: #fdfcfb;
+        --text-color: #3a3a3a;
+        --link-color: #000;
+        --code-block-bg: #f3f3f3;
+        --header-color: rgba(0, 0, 0, 0.65);
+        --divider-color: rgba(0, 0, 0, 0.1);
+        --lighter-divider-color: rgba(0, 0, 0, 0.05);
+        }
+    }
+
     a[href^="https://"]:after {
         background-image: none!important;
     } 
@@ -91,13 +62,12 @@ exports.templateBottom = `
         border: 1px solid var(--divider-color);
         border-radius: 4px;
         color: var(--text-color);
-        position: relative;    
+        position: absolute;    
         white-space: pre;
         bottom: 100%;
-        margin-left: -125px;
         z-index: 1;
         text-align: start;
-        height: auto;
+        height: fit-content;
         width: fit-content;
         text-transform: capitalize;
         padding: 5px;
@@ -148,11 +118,11 @@ exports.templateBottom = `
         display: inline-block;
     }
 
-    .day:not(:empty):hover .tooltip {
-        display: flex;
-        flex-direction: column;
-        position: absolute;
-    }
+    // .day:not(:empty):hover .tooltip {
+    //     display: flex;
+    //     flex-direction: column;
+    //     position: absolute;
+    // }
 
     .tooltip h3{
         margin-top: 0px !important;
@@ -193,4 +163,48 @@ exports.templateBottom = `
         color: var(--link-color);
     }
 
-</style>`    
+</style>
+<script>
+function positionTooltips() {
+    const calendars = document.querySelectorAll('.calendar');
+    calendars.forEach((calendar) => {
+        calendar.addEventListener('mouseover', (event) => {
+            if(event.target.classList.contains('day') && !event.target.classList.contains('empty')) {
+                calendar.style.display = "relative";
+                const tooltip = event.target.querySelector('.tooltip');
+                const rect = event.target.getBoundingClientRect();
+                const tooltipWidth = tooltip.offsetWidth;
+                const tooltipHeight = tooltip.offsetHeight;
+                const windowWidth = window.innerWidth;
+                if (windowWidth >= 350 && windowWidth <= 449) {
+                    tooltip.style.position = "fixed";
+                    tooltip.style.left = "10%";
+                    tooltip.style.top = (event.clientY - 125) +  "px";
+                } else if (windowWidth >= 450 && windowWidth <= 649) {
+                    tooltip.style.position = "fixed";
+                    tooltip.style.left = "20%";
+                    tooltip.style.top = (event.clientY - 125) +  "px";
+                } else {
+                    if (rect.left > (windowWidth / 2)) {
+                        tooltip.style.right = (rect.right / 40) + 'px';
+                    } else {
+                        tooltip.style.left = (rect.left / 20) + 'px';                
+                    }
+                    tooltip.style.position = "absolute";
+                }
+                tooltip.style.display = "flex";
+                tooltip.style.flexDirection = "column";    
+            }
+        })
+
+        calendar.addEventListener('mouseout', (event) => {
+            if (event.target.classList.contains('day') && !event.target.classList.contains('empty')) {
+                const tooltip = event.target.querySelector('.tooltip');
+                tooltip.style.display = 'none';
+            }
+        })
+    })
+}
+window.addEventListener('load', positionTooltips());
+window.addEventListener('resize', positionTooltips());
+</script>`    

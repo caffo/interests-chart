@@ -1,0 +1,39 @@
+@media only screen and (max-width: 991.98px) {
+  h1 {
+    font-size: 2rem;
+    line-height: 2.5rem;
+  }
+
+  body, body > header, article, .references, .main {
+    max-width: 58ch !important;
+  }
+  
+  body {
+   margin: 0 auto !important;
+  }
+  
+  footer {
+    width: unset !important;
+    margin: 5ch auto !important;
+  }
+}
+
+@media only screen and (max-width: 575.98px) {
+  h1 {
+    font-size: 2rem;
+    line-height: 2.5rem;
+  }
+
+  body, body > header, article, .references, .main {
+    max-width: 36ch !important;
+  }
+  
+  body {
+   margin: 0 auto !important;
+  }
+  
+  footer {
+    width: unset !important;
+    margin: 5ch auto !important;
+  }
+}

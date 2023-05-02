@@ -1,0 +1,27 @@
+// Add pinned style to all pinner child
+window.addEventListener("load", function(){
+  document.querySelectorAll(".pinner").forEach(x => x.children[0].classList.add("pinned"));
+});
+;
+window.addEventListener("load", function(){
+  ignoredReferences = [
+   "Website Index",
+   "Website Changelog",
+   "Website Drafts",
+   "Primary Interests/Calendar" 
+  ];
+
+  ignoredReferences.forEach(function(r){
+    document.querySelectorAll("[data-reference='"+r+"']",).forEach(function(e) {
+      listItem = e.parentNode;
+      list = listItem.parentNode;
+      list.removeChild(listItem);
+    });    
+  });
+
+  const references = document.getElementsByClassName("references")[0];
+  if (references != undefined && references.children[1].childElementCount > 0) {
+    references.style.display="block";
+  }
+});
+;
