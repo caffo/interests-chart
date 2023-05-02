@@ -1,7 +1,6 @@
 const fs = require('fs'),
     path = require('path'),
     HTMLParser = require('node-html-parser'),
-    jsDom = require('jsdom'),
     DOMParser = require('dom-parser'),
     fetch = require('node-fetch'),
     calendarTemplate = require('./templates/calendarTemplate'),
