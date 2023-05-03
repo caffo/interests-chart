@@ -182,6 +182,10 @@ function positionTooltips() {
                     tooltip.style.top = (event.clientY - 125) +  "px";
                 } else if (windowWidth >= 450 && windowWidth <= 649) {
                     tooltip.style.position = "fixed";
+                    tooltip.style.left = "15%";
+                    tooltip.style.top = (event.clientY - 125) +  "px";
+                } else if (windowWidth >= 650 && windowWidth <= 849) {
+                    tooltip.style.position = "fixed";
                     tooltip.style.left = "20%";
                     tooltip.style.top = (event.clientY - 125) +  "px";
                 } else {
@@ -205,6 +209,10 @@ function positionTooltips() {
         })
     })
 }
-window.addEventListener('load', positionTooltips());
-window.addEventListener('resize', positionTooltips());
+window.addEventListener('load', () => {
+    positionTooltips();
+    window.addEventListener('resize', () => {
+        positionTooltips();
+    });
+});
 </script>`    
