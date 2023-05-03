@@ -165,49 +165,97 @@ exports.templateBottom = `
 
 </style>
 <script>
+function isTouchDevice() {
+    return (('ontouchstart' in window) || (navigator.maxTouchPoints > 0) || (navigator.msMaxTouchPoints > 0)) || ('ontouchstart' in nagivator);
+}
+
 function positionTooltips() {
     const calendars = document.querySelectorAll('.calendar');
-    calendars.forEach((calendar) => {
-        calendar.addEventListener('mouseover', (event) => {
-            if(event.target.classList.contains('day') && !event.target.classList.contains('empty')) {
-                calendar.style.display = "relative";
-                const tooltip = event.target.querySelector('.tooltip');
-                const rect = event.target.getBoundingClientRect();
-                const tooltipWidth = tooltip.offsetWidth;
-                const tooltipHeight = tooltip.offsetHeight;
-                const windowWidth = window.innerWidth;
-                if (windowWidth >= 350 && windowWidth <= 449) {
-                    tooltip.style.position = "fixed";
-                    tooltip.style.left = "10%";
-                    tooltip.style.top = (event.clientY - 125) +  "px";
-                } else if (windowWidth >= 450 && windowWidth <= 649) {
-                    tooltip.style.position = "fixed";
-                    tooltip.style.left = "15%";
-                    tooltip.style.top = (event.clientY - 125) +  "px";
-                } else if (windowWidth >= 650 && windowWidth <= 849) {
-                    tooltip.style.position = "fixed";
-                    tooltip.style.left = "20%";
-                    tooltip.style.top = (event.clientY - 125) +  "px";
-                } else {
-                    if (rect.left > (windowWidth / 2)) {
-                        tooltip.style.right = (rect.right / 40) + 'px';
+    if(isTouchDevice()) {
+        calendars.forEach((calendar) => {
+            calendar.addEventListener('touchstart', (event) => {
+                if(event.target.classList.contains('day') && !event.target.classList.contains('empty')) {
+                    calendar.style.display = "relative";
+                    const tooltip = event.target.querySelector('.tooltip');
+                    const rect = event.target.getBoundingClientRect();
+                    const tooltipWidth = tooltip.offsetWidth;
+                    const tooltipHeight = tooltip.offsetHeight;
+                    const windowWidth = window.innerWidth;
+                    if (windowWidth >= 350 && windowWidth <= 449) {
+                        tooltip.style.position = "fixed";
+                        tooltip.style.left = "10%";
+                        tooltip.style.top = (event.clientY - 125) +  "px";
+                    } else if (windowWidth >= 450 && windowWidth <= 649) {
+                        tooltip.style.position = "fixed";
+                        tooltip.style.left = "15%";
+                        tooltip.style.top = (event.clientY - 125) +  "px";
+                    } else if (windowWidth >= 650 && windowWidth <= 800) {
+                        tooltip.style.position = "fixed";
+                        tooltip.style.left = "25%";
+                        tooltip.style.top = (event.clientY - 125) +  "px";
                     } else {
-                        tooltip.style.left = (rect.left / 20) + 'px';                
+                        if (rect.left > (windowWidth / 2)) {
+                            tooltip.style.right = (rect.right / 40) + 'px';
+                        } else {
+                            tooltip.style.left = (rect.left / 20) + 'px';                
+                        }
+                        tooltip.style.position = "absolute";
                     }
-                    tooltip.style.position = "absolute";
+                    tooltip.style.display = "flex";
+                    tooltip.style.flexDirection = "column";    
                 }
-                tooltip.style.display = "flex";
-                tooltip.style.flexDirection = "column";    
-            }
+            })
+    
+            calendar.addEventListener('touchend', (event) => {
+                if (event.target.classList.contains('day') && !event.target.classList.contains('empty')) {
+                    const tooltip = event.target.querySelector('.tooltip');
+                    tooltip.style.display = 'none';
+                }
+            })
         })
-
-        calendar.addEventListener('mouseout', (event) => {
-            if (event.target.classList.contains('day') && !event.target.classList.contains('empty')) {
-                const tooltip = event.target.querySelector('.tooltip');
-                tooltip.style.display = 'none';
-            }
+    } else {
+        calendars.forEach((calendar) => {
+            calendar.addEventListener('mouseover', (event) => {
+                if(event.target.classList.contains('day') && !event.target.classList.contains('empty')) {
+                    calendar.style.display = "relative";
+                    const tooltip = event.target.querySelector('.tooltip');
+                    const rect = event.target.getBoundingClientRect();
+                    const tooltipWidth = tooltip.offsetWidth;
+                    const tooltipHeight = tooltip.offsetHeight;
+                    const windowWidth = window.innerWidth;
+                    if (windowWidth >= 350 && windowWidth <= 449) {
+                        tooltip.style.position = "fixed";
+                        tooltip.style.left = "10%";
+                        tooltip.style.top = (event.clientY - 125) +  "px";
+                    } else if (windowWidth >= 450 && windowWidth <= 649) {
+                        tooltip.style.position = "fixed";
+                        tooltip.style.left = "15%";
+                        tooltip.style.top = (event.clientY - 125) +  "px";
+                    } else if (windowWidth >= 650 && windowWidth <= 800) {
+                        tooltip.style.position = "fixed";
+                        tooltip.style.left = "25%";
+                        tooltip.style.top = (event.clientY - 125) +  "px";
+                    } else {
+                        if (rect.left > (windowWidth / 2)) {
+                            tooltip.style.right = (rect.right / 40) + 'px';
+                        } else {
+                            tooltip.style.left = (rect.left / 20) + 'px';                
+                        }
+                        tooltip.style.position = "absolute";
+                    }
+                    tooltip.style.display = "flex";
+                    tooltip.style.flexDirection = "column";    
+                }
+            })
+    
+            calendar.addEventListener('mouseout', (event) => {
+                if (event.target.classList.contains('day') && !event.target.classList.contains('empty')) {
+                    const tooltip = event.target.querySelector('.tooltip');
+                    tooltip.style.display = 'none';
+                }
+            })
         })
-    })
+    }
 }
 window.addEventListener('load', () => {
     positionTooltips();
