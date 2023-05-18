@@ -163,57 +163,112 @@ exports.templateBottom = `
         color: var(--link-color);
     }
 
-</style>
-<script>
+    /* IMPROVED TOOLTIPS  */
 
-function positionTooltips() {
-    const calendars = document.querySelectorAll('.calendar');
-    calendars.forEach((calendar) => {
-        calendar.addEventListener('mouseover', (event) => {
-            if(event.target.classList.contains('day') && !event.target.classList.contains('empty')) {
-                calendar.style.display = "relative";
-                const tooltip = event.target.querySelector('.tooltip');
-                const rect = event.target.getBoundingClientRect();
-                const tooltipWidth = tooltip.offsetWidth;
-                const tooltipHeight = tooltip.offsetHeight;
-                const windowWidth = window.innerWidth;
-                if (windowWidth >= 350 && windowWidth <= 449) {
-                    tooltip.style.position = "fixed";
-                    tooltip.style.left = "10%";
-                    tooltip.style.top = (event.clientY - 125) +  "px";
-                } else if (windowWidth >= 450 && windowWidth <= 649) {
-                    tooltip.style.position = "fixed";
-                    tooltip.style.left = "15%";
-                    tooltip.style.top = (event.clientY - 125) +  "px";
-                } else if (windowWidth >= 650 && windowWidth <= 800) {
-                    tooltip.style.position = "fixed";
-                    tooltip.style.left = "25%";
-                    tooltip.style.top = (event.clientY - 125) +  "px";
-                } else {
-                    if (rect.left > (windowWidth / 2)) {
-                        tooltip.style.right = (rect.right / 40) + 'px';
-                    } else {
-                        tooltip.style.left = (rect.left / 20) + 'px';                
-                    }
-                    tooltip.style.position = "absolute";
-                }
-                tooltip.style.display = "flex";
-                tooltip.style.flexDirection = "column";    
-            }
-        })
+    .day>.itooltip {
+        display: none;
+        position: absolute;
+        bottom: 110%;
+        transform: translateX(-50%);
+        z-index: 1;
+        border: 1px solid var(--divider-color);
+        border-radius: 4px;
+        width: 250px;
+        background: var(--bg-color);
+        padding: 20px;
+        text-transform: none;
+        font-size: medium;
+        text-align: center !important;
+    }
+    
+    .day:hover>.itooltip { 
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+    }
 
-        calendar.addEventListener('mouseout', (event) => {
-            if (event.target.classList.contains('day') && !event.target.classList.contains('empty')) {
-                const tooltip = event.target.querySelector('.tooltip');
-                tooltip.style.display = 'none';
-            }
-        })
-    })
-}
-window.addEventListener('load', () => {
-    positionTooltips();
-    window.addEventListener('resize', () => {
-        positionTooltips();
-    });
-});
-</script>`    
+    .day>.itooltip h3 { 
+        margin: 0px !important;
+        padding: 0px !important;
+        line-height: 1em !important;
+        font-size: 18px !important;
+    }
+
+    .day>.itooltip ul { 
+        margin: 0px !important;
+        padding: 0px !important;
+        font-size: 16px;
+    }
+
+    .day>.itooltip li { 
+        margin: 0px !important;
+        padding: 0px !important;
+        margin-left: 15px !important;
+        list-style-type: disc !important;
+        line-height: 20px;
+        text-align: left;
+    }
+
+    .day>.itooltip p { 
+        margin: 0px !important;
+        padding: 0px !important;
+        line-height: 20px !important;
+        text-align: left !important;
+    }
+
+    @media screen and (max-width: 1024px) {
+        .day>.itooltip {
+            width: 200px !important;
+        }
+    }
+
+    @media screen and (max-width: 768px) {
+        .day>.itooltip {
+            width: 150px !important;
+            transform: translateX(-40%);
+            font-size: 14px !important;
+        }
+
+        .day>.itooltip h3 { 
+            font-size: 16px !important;
+        }
+
+        .day>.itooltip ul { 
+            font-size: 14px !important;
+        }
+
+        .main article ul {
+            padding: 0 50px !important;
+        }
+    }
+
+    @media screen and (max-width: 425px) {
+        .days {
+            position: relative !important;
+        }
+
+        .day {
+            position: static !important;
+        }
+
+        .day>.itooltip {
+            box-sizing: border-box !important;
+            left: 0 !important;
+            min-width: unset !important;
+            width: 100% !important;
+            top: unset !important;
+            bottom: unset !important;
+            margin: 0 auto !important;
+            right: 0 !important;
+            transform: none !important;
+        }
+
+        .main article ul {
+            padding: 0 10px !important;
+            margin: 0;
+        }
+    }
+    
+/* IMPROVED TOOLTIPS  */
+
+</style>`
