@@ -287,7 +287,7 @@ fs.readFile(filePathToFetchCalendar, { encoding: 'utf-8' }, async function (err,
                             if (interestIndicators.indexOf(fillerValue[0].toLocaleLowerCase()) == -1) {
                                 interestIndicators.push(fillerValue[0].toLocaleLowerCase())
                             }
-                            _template += `<div class="day ${i} ${fillerClass.toLocaleLowerCase()}">${fillerValue[0]}<div class="itooltip">${getDateFromDay(year, i) + tooltipFiller}</div></div>`
+                            _template += `<div class="day ${i} ${fillerClass.toLocaleLowerCase()}"><div class="itooltip">${getDateFromDay(year, i) + tooltipFiller}</div></div>`
                         } else {
                             // console.log("no previous year - " , year);
                         }
@@ -295,9 +295,9 @@ fs.readFile(filePathToFetchCalendar, { encoding: 'utf-8' }, async function (err,
                         if ((year == currentYear && i > today) || !interestFound) {
                             fillerClass = 'empty';
                             fillerValue = "";
-                            _template += `<div class="day ${i} ${fillerClass.toLocaleLowerCase().trim()}">${fillerValue ? fillerValue.trim()[0] : ""}</div>`
+                            _template += `<div class="day ${i} ${fillerClass.toLocaleLowerCase().trim()}"></div>`
                         } else {
-                            _template += `<div class="day ${i} ${fillerClass.toLocaleLowerCase()}">${fillerValue[0] ? fillerValue[0] : ""}<div class="itooltip">${getDateFromDay(year, i) + tooltipFiller.tooltipData}</div></div>`
+                            _template += `<div class="day ${i} ${fillerClass.toLocaleLowerCase()}"><div class="itooltip">${getDateFromDay(year, i) + tooltipFiller.tooltipData}</div></div>`
                         }
                     }
                 }
