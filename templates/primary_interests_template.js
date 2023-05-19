@@ -83,7 +83,7 @@ exports.templateTop = `<!-- saved from url=(0052)https://www.rodrigofranco.com/P
   </style>
 </head>
 
-<body>
+<body tabIndex=0>
   <header>
     <a href="https://www.rodrigofranco.com/">
       <h1>
