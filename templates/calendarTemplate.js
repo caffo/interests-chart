@@ -181,7 +181,7 @@ exports.templateBottom = `
         text-align: center !important;
     }
     
-    .day:hover>.itooltip { 
+    .day:hover>.itooltip img { 
         display: flex;
         flex-direction: column;
         align-items: flex-start;
@@ -242,7 +242,7 @@ exports.templateBottom = `
         }
     }
 
-    @media screen and (max-width: 425px) {
+    @media screen and (max-width: 428px) {
         .days {
             position: relative !important;
         }
