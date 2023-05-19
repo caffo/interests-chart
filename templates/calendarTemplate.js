@@ -224,7 +224,7 @@ exports.templateBottom = `
 
     @media screen and (max-width: 768px) {
         .day>.itooltip {
-            width: 150px !important;
+            width: 155px !important;
             transform: translateX(-40%);
             font-size: 14px !important;
         }
