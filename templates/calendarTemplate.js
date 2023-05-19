@@ -181,15 +181,8 @@ exports.templateBottom = `
         text-align: center !important;
     }
     
-    @media(hover: hover) and (pointer: fine) {
-    .day > .itooltip { 
-            display: flex;
-            flex-direction: column;
-            align-items: flex-start;
-        }
-    }
     
-    .day:hover > .itooltip, .day:active > .itooltip, .day:focus > .itooltip { 
+    .day:hover>.itooltip
         display: flex;
         flex-direction: column;
         align-items: flex-start;
