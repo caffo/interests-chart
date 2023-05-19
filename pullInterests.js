@@ -272,7 +272,8 @@ fs.readFile(filePathToFetchCalendar, { encoding: 'utf-8' }, async function (err,
                         }
                     }
 
-                    _template += `<div class="day ${i} ${fillerClass.toLocaleLowerCase().trim()}">${fillerValue.trim()[0]}<div class="itooltip">${getDateFromDay(year, i) + "&#xa;" + tooltipFiller.tooltipData}</div></div>`;
+//                    _template += `<div class="day ${i} ${fillerClass.toLocaleLowerCase().trim()}">${fillerValue.trim()[0]}<div class="itooltip">${getDateFromDay(year, i) + "&#xa;" + tooltipFiller.tooltipData}</div></div>`;
+                      _template += `<div class="day ${i} ${fillerClass.toLocaleLowerCase().trim()}"><div class="itooltip">${getDateFromDay(year, i) + "&#xa;" + tooltipFiller.tooltipData}</div></div>`;
                 } else {
                     // Marking till today only 
 
