@@ -5,7 +5,7 @@ exports.templateTop = `<!DOCTYPE html>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>primary interests calendar</title>
 </head>
-<body>`
+<body tabIndex=0>`
 
 exports.templateBottom = `
 </div>
