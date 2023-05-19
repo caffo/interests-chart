@@ -96,7 +96,7 @@ exports.templateBottom = `
         padding: 5px 0px;
         text-transform: lowercase;
         line-height: 30px;
-        font-size: medium;
+        font-size: large;
         margin: 0px;
         position: relative;
     }
@@ -181,7 +181,7 @@ exports.templateBottom = `
         text-align: center !important;
     }
     
-    .day:hover>.itooltip img { 
+    .day:hover>.itooltip { 
         display: flex;
         flex-direction: column;
         align-items: flex-start;
