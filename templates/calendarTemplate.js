@@ -242,7 +242,7 @@ exports.templateBottom = `
         }
     }
 
-    @media screen and (max-width: 425px) {
+    @media screen and (max-width: 428px) {
         .days {
             position: relative !important;
         }
