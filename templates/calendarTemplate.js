@@ -182,7 +182,7 @@ exports.templateBottom = `
     }
     
     
-    .day:hover>.itooltip
+    .day:hover>.itooltip {
         display: flex;
         flex-direction: column;
         align-items: flex-start;
