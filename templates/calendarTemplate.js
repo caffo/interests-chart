@@ -168,7 +168,7 @@ exports.templateBottom = `
     .day>.itooltip {
         display: none;
         position: absolute;
-        bottom: 110%;
+        bottom: 102.5%;
         transform: translateX(-50%);
         z-index: 1;
         border: 1px solid var(--divider-color);
