@@ -11,8 +11,8 @@ exports.templateBottom = `
 </div>
 <style> 
     :root {
-        --body-font: "Degular Text";
-        --header-font: "Redaction 35";
+        --body-font: serif;
+        --header-font: serif;
     }
     @media (prefers-color-scheme: dark) {
         :root {
@@ -37,9 +37,11 @@ exports.templateBottom = `
         }
     }
 
-    a[href^="https://"]:after {
-        background-image: none!important;
-    } 
+    a[href^="https://"],
+    a[href^="http://"] {
+      text-decoration-style: dotted !important;
+    }
+
 
     .Calendars {
         margin-bottom: 50px;
