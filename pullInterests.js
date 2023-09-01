@@ -123,7 +123,7 @@ function writeTemplateToHTML(_template) {
             let foundPlaceToInjectAfter = "";
             let lis = uls.getElementsByTagName('li');
             for (let index = 0; index < lis.length; index++) {
-                if (lis[index].textContent.indexOf("story of our lives.") > -1) {
+                if (lis[index].textContent.indexOf("over the years.") > -1) {
                     foundPlaceToInjectAfter = lis[index];
                     break;
                 }
